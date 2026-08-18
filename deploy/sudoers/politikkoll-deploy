@@ -1,0 +1,11 @@
+# Install to /etc/sudoers.d/politikkoll-deploy on the target box:
+#   sudo visudo -cf deploy/sudoers/politikkoll-deploy   # validate syntax FIRST
+#   sudo cp deploy/sudoers/politikkoll-deploy /etc/sudoers.d/politikkoll-deploy
+#   sudo chown root:root /etc/sudoers.d/politikkoll-deploy
+#   sudo chmod 440 /etc/sudoers.d/politikkoll-deploy
+#
+# Scoped to exactly the two commands deploy.sh needs — not blanket sudo for
+# the deploy user. Confirm the systemctl path matches this box first with
+# `which systemctl`; if it differs, this rule silently won't match and
+# deploy.sh's restart step will just prompt for a password and hang in CI.
+deploy ALL=(root) NOPASSWD: /usr/bin/systemctl restart politikkoll-web, /usr/bin/systemctl restart politikkoll-jobs

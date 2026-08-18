@@ -128,11 +128,27 @@ advice sized for a dedicated instance.
 
 ## Routine deploys after that
 
-From `/var/www/politikkoll` as the `deploy` user:
+Manual, on purpose — no CI/CD, no webhook, nothing triggers on push. Log in
+as `deploy` and run it yourself:
+
 ```
-git pull
+su - deploy
+cd /var/www/politikkoll
+git fetch && git reset --hard origin/main
 bundle install --deployment --without development test
 RAILS_ENV=production bin/rails db:migrate
 RAILS_ENV=production bin/rails assets:precompile
 sudo systemctl restart politikkoll-web politikkoll-jobs
+```
+
+Or the same steps as one command: `bash deploy/deploy.sh` from
+`/var/www/politikkoll` (still something *you* run, on demand — not
+triggered by anything). The sudoers rule in `deploy/sudoers/politikkoll-deploy`
+is still worth installing either way, so the restart step doesn't need the
+root password every time:
+```
+sudo visudo -cf deploy/sudoers/politikkoll-deploy   # validate first
+sudo cp deploy/sudoers/politikkoll-deploy /etc/sudoers.d/politikkoll-deploy
+sudo chown root:root /etc/sudoers.d/politikkoll-deploy
+sudo chmod 440 /etc/sudoers.d/politikkoll-deploy
 ```
