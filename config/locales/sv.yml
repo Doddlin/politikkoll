@@ -1,6 +1,11 @@
 sv:
   layout:
     title: politikkoll
+  seo:
+    default_title: "politikkoll — Håller partierna vad de lovar?"
+    default_description: "Fråga fritt om vallöften, voteringar och vad som faktiskt hänt i riksdagen. Källor från Riksdagen, SCB och partiernas egna valmanifest — vi rekommenderar aldrig, bara visar källorna."
+    home_title: "politikkoll — Håller partierna vad de lovar?"
+    home_description: "Kolla vad partierna faktiskt röstat på i riksdagen, jämför med deras valmanifest, och slå upp SCB-statistik bakom politiska påståenden. Sourced svar, inga rekommendationer."
   nav:
     home: Hem
     new_conversation: Ny konversation

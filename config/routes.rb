@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   resource :geography, only: [ :show ], controller: "geography"
   resource :insights, only: [ :show ], controller: "insights"
   get "locale/:locale", to: "locales#update", as: :set_locale, constraints: { locale: /sv|en/ }
+  get "sitemap.xml", to: "sitemap#show", defaults: { format: "xml" }
 
   # Defines the root path route ("/")
   root "home#index"

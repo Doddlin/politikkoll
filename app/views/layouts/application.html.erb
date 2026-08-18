@@ -1,13 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%= I18n.locale %>">
   <head>
-    <title><%= content_for(:title) || "Politikkoll" %></title>
+    <% page_title = content_for(:title) || t("seo.default_title") %>
+    <% page_description = content_for(:description) || t("seo.default_description") %>
+    <title><%= page_title %></title>
+    <meta name="description" content="<%= page_description %>">
+    <link rel="canonical" href="<%= request.original_url.split("?").first %>">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Politikkoll">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
+    <%# Open Graph — social share previews (Slack, Facebook, LinkedIn, etc). %>
+    <meta property="og:site_name" content="politikkoll">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="<%= page_title %>">
+    <meta property="og:description" content="<%= page_description %>">
+    <meta property="og:url" content="<%= request.original_url.split("?").first %>">
+    <meta property="og:image" content="<%= image_url("riksdagshuset-bridge.jpg") %>">
+    <meta property="og:locale" content="<%= I18n.locale == :sv ? "sv_SE" : "en_US" %>">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<%= page_title %>">
+    <meta name="twitter:description" content="<%= page_description %>">
+    <meta name="twitter:image" content="<%= image_url("riksdagshuset-bridge.jpg") %>">
+
+    <%# WebSite structured data — helps search engines understand what this
+        is; deliberately not claiming any SearchAction/sitelinks-searchbox
+        since there's no site-wide free-text search to point it at. %>
+    <script type="application/ld+json">
+      <%== {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "politikkoll",
+        "url": root_url,
+        "description": t("seo.default_description"),
+        "inLanguage": [ "sv", "en" ]
+      }.to_json %>
+    </script>
 
     <%= yield :head %>
 

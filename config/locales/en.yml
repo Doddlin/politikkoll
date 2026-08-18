@@ -1,6 +1,11 @@
 en:
   layout:
     title: politikkoll
+  seo:
+    default_title: "politikkoll — Do the parties keep their promises?"
+    default_description: "Ask freely about election promises, votes, and what has actually happened in the Riksdag. Sourced from Riksdagen, Statistics Sweden, and the parties' own manifestos — we never recommend, only show the sources."
+    home_title: "politikkoll — Do the parties keep their promises?"
+    home_description: "Check what Swedish parties have actually voted for in parliament, compare it against their election manifestos, and look up the real statistics behind political claims. Sourced answers, no recommendations."
   nav:
     home: Home
     new_conversation: New conversation
