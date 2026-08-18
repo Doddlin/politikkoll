@@ -21,6 +21,60 @@ namespace :riksdagen do
          "created: #{stats[:created]}, updated: #{stats[:updated]}"
   end
 
+  desc "Backfill document metadata (motioner + betänkanden) for every " \
+       "riksmöte in the enrichment relevance window (currently the last " \
+       "8, i.e. two election terms). Usage: rails riksdagen:backfill_documents"
+  task backfill_documents: :environment do
+    riksmoten = Riksdagen::DocumentImporter.recent_riksmoten
+    puts "Backfilling documents for #{riksmoten.size} riksmöten: #{riksmoten.join(', ')}"
+
+    totals = { created: 0, updated: 0 }
+    riksmoten.each do |rm|
+      %w[bet mot].each do |doktyp|
+        print "  #{rm} #{doktyp}... "
+        stats = Riksdagen::DocumentImporter.call(rm: rm, doktyp: doktyp)
+        totals[:created] += stats[:created]
+        totals[:updated] += stats[:updated]
+        puts "#{stats[:rows]} rows seen, #{stats[:created]} new, #{stats[:updated]} updated"
+      end
+    end
+
+    puts "Done. #{totals[:created]} new documents, #{totals[:updated]} updated, " \
+         "across #{riksmoten.size} riksmöten."
+  end
+
+  desc "Import votes for every betänkande that hasn't been checked yet — a " \
+       "one-time bulk catch-up, not the small trickle ImportMissingVotesJob " \
+       "does on its 10-minute schedule. Run after backfill_documents. " \
+       "Usage: rails riksdagen:backfill_votes"
+  task backfill_votes: :environment do
+    candidates = Document.where(doktyp: "bet", votes_checked_at: nil)
+    total = candidates.count
+    puts "Importing votes for #{total} betänkanden — this will take a while " \
+         "(one Riksdagen API call per betänkande, paced to be a considerate " \
+         "caller rather than as fast as possible)."
+
+    processed = 0
+    new_votes = 0
+    failures = 0
+
+    candidates.find_each do |document|
+      stats = Riksdagen::VoteImporter.call(rm: document.rm, bet: document.beteckning)
+      document.update!(votes_checked_at: Time.current)
+      new_votes += stats[:votes]
+      processed += 1
+      print "\r  #{processed}/#{total} betänkanden checked, #{new_votes} new voteringar so far"
+      sleep 0.2
+    rescue => e
+      failures += 1
+      warn "\n  failed: #{document.rm} #{document.beteckning}: #{e.message}"
+      document.update!(votes_checked_at: Time.current) # don't retry a permanent failure forever
+    end
+
+    puts
+    puts "Done. Checked #{processed}/#{total} betänkanden, #{new_votes} new voteringar, #{failures} failures."
+  end
+
   desc "Fetch full text + embeddings for imported documents. " \
        "Usage: rails riksdagen:enrich_documents [TITLE_LIKE=skatt] [PARTY=S] [DOKTYP=mot] [LIMIT=50]"
   task enrich_documents: :environment do

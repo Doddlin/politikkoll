@@ -13,6 +13,18 @@ module Riksdagen
       new(...).call
     end
 
+    # The current riksmöte plus the N-1 before it, oldest first — e.g.
+    # ["2018/19", ..., "2025/26"] for count: 8 today. A riksmöte runs
+    # September through June, so before September the "current" one is
+    # still last year's. Matches Riksdagen::EnrichDocumentsJob's 8-year
+    # RELEVANCE_WINDOW by count (two election terms) rather than by exact
+    # date arithmetic, since riksmöten don't align to calendar years anyway.
+    def self.recent_riksmoten(count: 8)
+      today = Time.current
+      end_year = today.month >= 9 ? today.year : today.year - 1
+      (0...count).map { |i| y = end_year - i; "#{y}/#{(y + 1).to_s[-2..]}" }.reverse
+    end
+
     # rm:     riksmöte, e.g. "2023/24"
     # doktyp: document type, e.g. "bet" (betänkande) or "mot" (motion)
     def initialize(rm:, doktyp:, page_size: PAGE_SIZE)
