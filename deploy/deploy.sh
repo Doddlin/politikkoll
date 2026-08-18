@@ -14,7 +14,12 @@ git fetch origin main
 git reset --hard origin/main
 
 echo "==> Installing gems"
-bundle install --deployment --without development test
+# Not `bundle install --deployment ...` — recent Bundler removed that flag
+# (it relied on being remembered across invocations, which Bundler no
+# longer does); this is the current equivalent, persisted in .bundle/config.
+bundle config set --local deployment true
+bundle config set --local without development test
+bundle install
 
 echo "==> Migrating database"
 RAILS_ENV=production bin/rails db:migrate

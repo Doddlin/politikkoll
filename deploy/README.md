@@ -135,7 +135,9 @@ as `deploy` and run it yourself:
 su - deploy
 cd /var/www/politikkoll
 git fetch && git reset --hard origin/main
-bundle install --deployment --without development test
+bundle config set --local deployment true
+bundle config set --local without development test
+bundle install
 RAILS_ENV=production bin/rails db:migrate
 RAILS_ENV=production bin/rails assets:precompile
 sudo systemctl restart politikkoll-web politikkoll-jobs
