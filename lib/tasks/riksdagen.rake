@@ -70,22 +70,41 @@ namespace :riksdagen do
     processed = 0
     new_votes = 0
     failures = 0
+    consecutive_failures = 0
 
     candidates.find_each do |document|
       stats = Riksdagen::VoteImporter.call(rm: document.rm, bet: document.beteckning)
       document.update!(votes_checked_at: Time.current)
       new_votes += stats[:votes]
       processed += 1
+      consecutive_failures = 0
       print "\r  #{processed}/#{total} betänkanden checked, #{new_votes} new voteringar so far"
-      sleep 0.2
+      sleep 1
     rescue => e
       failures += 1
+      consecutive_failures += 1
+      # Deliberately NOT marking votes_checked_at here — a network/rate-limit
+      # failure is not the same as "checked, no vote data exists." Confirmed
+      # live: a run that did mark it permanently lost SoU9 (2018/19) and
+      # anything else it failed on to a plain ECONNRESET, since nothing
+      # would ever retry a betänkande with votes_checked_at already set.
+      # Left nil, this one's picked up again next run or by
+      # ImportMissingVotesJob's normal schedule.
       warn "\n  failed: #{document.rm} #{document.beteckning}: #{e.message}"
-      document.update!(votes_checked_at: Time.current) # don't retry a permanent failure forever
+
+      # Several in a row is a real signal we're being throttled, not just
+      # unlucky once — pause properly rather than hammer straight through
+      # the rest of the list at the same pace and make it worse.
+      if consecutive_failures >= 3
+        cooldown = [ 30 * consecutive_failures, 300 ].min
+        warn "  #{consecutive_failures} failures in a row — pausing #{cooldown}s before continuing"
+        sleep cooldown
+      end
     end
 
     puts
-    puts "Done. Checked #{processed}/#{total} betänkanden, #{new_votes} new voteringar, #{failures} failures."
+    puts "Done. Checked #{processed}/#{total} betänkanden, #{new_votes} new voteringar, #{failures} failures " \
+         "(failures are left with votes_checked_at unset, so just re-running this task retries them)."
   end
 
   desc "Fetch full text + embeddings for imported documents. " \
