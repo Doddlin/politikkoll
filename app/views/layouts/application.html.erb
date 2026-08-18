@@ -46,9 +46,13 @@
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
+    <%# Fingerprinted asset paths, not hardcoded /icon.png — so the filename
+        itself changes whenever the icon does, which is what actually
+        busts stale caches (Cloudflare, browsers) rather than relying on
+        anyone remembering to purge a cache by hand after every icon edit. %>
+    <link rel="icon" href="<%= asset_path("icon.png") %>" type="image/png">
+    <link rel="icon" href="<%= asset_path("icon.svg") %>" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="<%= asset_path("icon.png") %>">
 
     <%# Propshaft doesn't process ERB inside .css files, so @font-face (which
         needs asset_path for the fingerprinted font URL) lives here instead. %>
