@@ -10,8 +10,22 @@ module Mistral
     def initialize(api_key: ENV.fetch("MISTRAL_API_KEY"))
       @api_key = api_key
       @connection = Faraday.new(url: BASE_URL) do |f|
+        # exceptions: here is a superset of Faraday's own default (which is
+        # just timeouts) — Faraday::RetriableResponse has to stay in the
+        # list for retry_statuses to still trigger a retry at all, since
+        # naming exceptions: explicitly replaces the default rather than
+        # adding to it. Connection-level failures (a plain ECONNRESET, no
+        # HTTP response at all) added on top of that, confirmed live
+        # elsewhere in this app to not be retried otherwise.
         f.request :retry, max: 4, interval: 1, backoff_factor: 2,
-                          retry_statuses: [ 429, 500, 502, 503 ]
+                          retry_statuses: [ 429, 500, 502, 503 ],
+                          exceptions: [
+                            Faraday::RetriableResponse,
+                            Faraday::ConnectionFailed,
+                            Faraday::TimeoutError,
+                            Errno::ECONNRESET,
+                            Errno::ETIMEDOUT
+                          ]
         f.adapter Faraday.default_adapter
       end
     end

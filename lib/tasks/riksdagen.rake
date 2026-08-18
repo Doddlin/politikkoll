@@ -25,10 +25,15 @@ namespace :riksdagen do
        "riksmöte in the enrichment relevance window (currently the last " \
        "8, i.e. two election terms). Usage: rails riksdagen:backfill_documents"
   task backfill_documents: :environment do
+    $stdout.sync = true # otherwise output redirected to a file (nohup ... > log) sits
+                        # in a buffer and is lost if the process ever dies abnormally —
+                        # confirmed live: an OOM-killed run left a completely empty log.
+
     riksmoten = Riksdagen::DocumentImporter.recent_riksmoten
     puts "Backfilling documents for #{riksmoten.size} riksmöten: #{riksmoten.join(', ')}"
 
     totals = { created: 0, updated: 0 }
+    failures = 0
     riksmoten.each do |rm|
       %w[bet mot].each do |doktyp|
         print "  #{rm} #{doktyp}... "
@@ -36,11 +41,16 @@ namespace :riksdagen do
         totals[:created] += stats[:created]
         totals[:updated] += stats[:updated]
         puts "#{stats[:rows]} rows seen, #{stats[:created]} new, #{stats[:updated]} updated"
+      rescue => e
+        failures += 1
+        puts "FAILED: #{e.class}: #{e.message}"
+        Rails.logger.error("[backfill_documents] #{rm} #{doktyp} failed: #{e.message}")
       end
     end
 
     puts "Done. #{totals[:created]} new documents, #{totals[:updated]} updated, " \
-         "across #{riksmoten.size} riksmöten."
+         "#{failures} failed, across #{riksmoten.size} riksmöten." \
+         "#{" Re-run to retry the failed ones — already-imported documents are skipped (0 new/updated), so it's safe to run again." if failures.positive?}"
   end
 
   desc "Import votes for every betänkande that hasn't been checked yet — a " \
@@ -48,6 +58,9 @@ namespace :riksdagen do
        "does on its 10-minute schedule. Run after backfill_documents. " \
        "Usage: rails riksdagen:backfill_votes"
   task backfill_votes: :environment do
+    $stdout.sync = true # see backfill_documents — same reasoning, matters even
+                        # more here given how much longer this one runs.
+
     candidates = Document.where(doktyp: "bet", votes_checked_at: nil)
     total = candidates.count
     puts "Importing votes for #{total} betänkanden — this will take a while " \

@@ -32,7 +32,19 @@ module Riksdagen
       @doktyp = doktyp
       @page_size = page_size
       @connection = Faraday.new(url: BASE_URL) do |f|
-        f.request :retry, max: 3, interval: 1
+        # Faraday's retry default only covers timeouts — a plain ECONNRESET
+        # (confirmed live: killed a full riksdagen:backfill_documents run
+        # mid-way) isn't in that list unless named explicitly here.
+        f.request :retry,
+                  max: 3,
+                  interval: 1,
+                  backoff_factor: 2,
+                  exceptions: [
+                    Faraday::ConnectionFailed,
+                    Faraday::TimeoutError,
+                    Errno::ECONNRESET,
+                    Errno::ETIMEDOUT
+                  ]
         f.adapter Faraday.default_adapter
       end
     end
