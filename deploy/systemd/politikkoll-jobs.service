@@ -1,0 +1,53 @@
+# Install to /etc/systemd/system/politikkoll-jobs.service — the Solid
+# Queue supervisor, split out from the web process (see politikkoll-web.
+# service for why: matches how the other apps on this box already split
+# their own web/jobs units).
+#
+# This is what runs the recurring import/enrichment jobs (Riksdagen vote
+# imports, document enrichment/embeddings) — the ongoing work, not a
+# one-off migration step.
+#
+# Runs as the existing "deploy" user, not a new dedicated system user —
+# matching how this box already deploys things.
+
+[Unit]
+Description=politikkoll Solid Queue supervisor
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=deploy
+Group=deploy
+WorkingDirectory=/var/www/politikkoll
+EnvironmentFile=/var/www/politikkoll.env
+Environment=RAILS_ENV=production
+Environment=HOME=/home/deploy
+Environment=PATH=/home/deploy/.rbenv/shims:/home/deploy/.rbenv/bin:/usr/local/bin:/usr/bin:/bin
+
+ExecStart=/home/deploy/.rbenv/shims/bundle exec bin/jobs
+
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=30
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=politikkoll-jobs
+
+# Enrichment jobs call the Mistral API and do embedding writes, not heavy
+# local compute — keep this modest so it doesn't compete with the
+# background transcription service (the one genuinely CPU-hungry thing
+# already running on this box).
+MemoryHigh=300M
+MemoryMax=450M
+CPUQuota=40%
+
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/var/www/politikkoll
+
+[Install]
+WantedBy=multi-user.target

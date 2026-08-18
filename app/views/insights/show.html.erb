@@ -1,0 +1,53 @@
+<% content_for :title, "#{t("insights.title")} — politikkoll" %>
+
+<main class="page docs">
+  <header class="top">
+    <div>
+      <div class="wordmark">politikkoll</div>
+      <p class="tagline"><%= t("insights.title") %></p>
+    </div>
+    <div class="header-actions">
+      <%= render "shared/locale_switcher" %>
+      <%= link_to t("nav.home"), root_path, class: "home-link" %>
+    </div>
+  </header>
+
+  <p class="section-hint docs-subtitle"><%= t("insights.subtitle") %></p>
+
+  <div class="geo-note">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 11v5.5M12 8v.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <p><%= t("insights.attendance_note", total_votes: @total_votes) %></p>
+  </div>
+
+  <section class="section">
+    <p class="section-heading"><%= t("insights.most_present_heading") %></p>
+    <div class="leaderboard">
+      <% @most_present.each_with_index do |row, index| %>
+        <div class="leaderboard-row">
+          <span class="leaderboard-rank">#<%= index + 1 %></span>
+          <span class="leaderboard-party" style="background: <%= @parties_by_code[row.party_code]&.color || "var(--ink-faint)" %>"><%= row.party_code %></span>
+          <span class="leaderboard-name"><%= row.member.full_name %></span>
+          <span class="leaderboard-count"><%= row.present %>/<%= row.total %></span>
+          <span class="leaderboard-pct"><%= number_to_percentage(row.rate * 100, precision: 1) %></span>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-heading"><%= t("insights.least_present_heading") %></p>
+    <div class="leaderboard">
+      <% @least_present.each_with_index do |row, index| %>
+        <div class="leaderboard-row">
+          <span class="leaderboard-rank">#<%= index + 1 %></span>
+          <span class="leaderboard-party" style="background: <%= @parties_by_code[row.party_code]&.color || "var(--ink-faint)" %>"><%= row.party_code %></span>
+          <span class="leaderboard-name"><%= row.member.full_name %></span>
+          <span class="leaderboard-count"><%= row.present %>/<%= row.total %></span>
+          <span class="leaderboard-pct"><%= number_to_percentage(row.rate * 100, precision: 1) %></span>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <%= link_to t("insights.geography_cta"), geography_path, class: "browse-all-link" %>
+</main>

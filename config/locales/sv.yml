@@ -1,0 +1,147 @@
+sv:
+  layout:
+    title: politikkoll
+  nav:
+    home: Hem
+    new_conversation: Ny konversation
+    new_conversation_confirm: Starta om konversationen?
+  home:
+    tagline: "Fråga fritt om hur partierna röstat och resonerat. Vi rekommenderar aldrig — bara visar källorna."
+    resume_banner: "Du har en pågående konversation — fortsätt där du var"
+    hero:
+      eyebrow: "Riksdagen · SCB · Valmanifest"
+      headline: "Håller partierna vad de lovar?"
+      subhead: "Fråga fritt om vallöften, voteringar och vad som faktiskt hänt i riksdagen. Vi rekommenderar aldrig — bara visar källorna."
+      cta: "Gå till chatten"
+      scroll_hint: "eller utforska nedan ↓"
+      photo_credit: "Foto: %{name} / Unsplash"
+    numbers:
+      heading: "Källorna, i siffror"
+      documents: "dokument indexerade"
+      searchable: "sökbara med AI-sökning"
+      members: "riksdagsledamöter"
+      votes: "voteringar importerade — fler varje timme"
+    features:
+      heading: "Vad kan du göra här?"
+      compare:
+        title: "Jämför löfte med handling"
+        body: "Se om ett parti faktiskt röstat i linje med sitt eget valmanifest."
+        cta: "Jämför →"
+        question: "Har Moderaterna röstat i linje med sitt vallöfte om sänkt skatt?"
+      topic:
+        title: "Sök i sak"
+        body: "Fråga om ett ämne och få svar direkt ur motioner, betänkanden och valmanifest."
+        cta: "Fråga om ett ämne →"
+        question: "Hur ser Socialdemokraterna på skattesänkningar?"
+      vote:
+        title: "Följ en votering"
+        body: "Se exakt hur varje parti röstade i en specifik fråga, med källa till varje siffra."
+        cta: "Se en votering →"
+        question: "Hur röstade partierna i FiU1, budgeten för riksmöte 2023/24?"
+    closing:
+      heading: "Redo att kolla själv?"
+      cta: "Börja chatta"
+    stats:
+      votes: voteringar
+      committee_reports: betänkanden
+      motions: motioner
+      parties: partier
+    explore_heading: "Eller prova direkt"
+    motions_heading: "Motioner att utforska"
+    motions_hint: "Sökbara med fulltext just nu — fler tillkommer efterhand."
+    unknown_submitter: riksdagsledamöter
+    multiple_parties: flera
+    motion_question: "Berätta om motionen \"%{title}\" som %{submitter} lämnade in, och vad den föreslår."
+  chat:
+    empty_heading: "Vad är du nyfiken på?"
+    answer_label: "Svar, med källor"
+    input_placeholder: "Fråga om ett parti, en votering eller ett ämne …"
+    submit: Fråga
+    thinking: "Tänker …"
+  vote_board:
+    point: punkt
+  ballots:
+    ja: ja
+    nej: nej
+    avstar: avstår
+    franvarande: frånvarande
+  areas:
+    FiU: "Finanser & budget"
+    JuU: "Brott & straff"
+    SkU: Skatter
+    KU: "Grundlag & demokrati"
+    SoU: "Vård & omsorg"
+    CU: "Bostad & civilrätt"
+    TU: "Transport & infrastruktur"
+    NU: Näringsliv
+    SfU: "Socialförsäkring & pension"
+    MJU: "Miljö & jordbruk"
+    UbU: Utbildning
+    UU: Utrikespolitik
+    FöU: Försvar
+    KrU: Kultur
+    AU: Arbetsmarknad
+    UFöU: "Utrikes- & försvarssammansatt"
+  documents:
+    title: "Bläddra bland dokument"
+    subtitle: "Riksdagens egen indelning i utskott — inte en gissning."
+    all_areas: "Alla ämnen"
+    all_parties: "Alla partier"
+    doktyp:
+      mot: Motioner
+      bet: Betänkanden
+    all_types: "Alla typer"
+    no_results: "Inga dokument matchar det här filtret."
+    prev: "← Föregående"
+    next: "Nästa →"
+    page: "Sida %{page} av %{total}"
+    no_full_text: "Fulltext är inte importerad för det här dokumentet ännu."
+    related_votes: "Kopplade voteringar"
+    ask_cta: "Fråga om det här dokumentet →"
+    ask_question: "Berätta om \"%{title}\" (%{beteckning}) och vad den innebär."
+    chat_heading: "Fråga om det här dokumentet"
+    chat_placeholder: "T.ex. Vad föreslår den? Hur röstade partierna om den?"
+    chat_default_question: "Berätta om den och vad den innebär."
+    chat_context: "Angående %{beteckning} (\"%{title}\"): %{question}"
+    back: "← Alla dokument"
+    browse_all: "Bläddra bland alla dokument →"
+    geography_teaser: "Vill du se hur olika delar av landet röstat, istället för att bläddra parti för parti?"
+    geography_teaser_cta: "Utforska kartan över valkretsar →"
+  geography:
+    title: "Röster efter valkrets"
+    subtitle: "Hur röstade riksdagsledamöterna i olika delar av landet — baserat på deras egen valkrets, inte partitillhörighet."
+    interpretation_note: "Kartan visar hur sittande riksdagsledamöter röstade, grupperat efter valkrets — inte hur väljarna i regionen röstat i ett val. Ledamöter röstar nästan alltid i linje med sitt parti, så färgen speglar oftast vilka partier som har mandat i valkretsen, inte en egen regional hållning. Mindre valkretsar (få mandat, som Gotland) ger dessutom mer skiftande siffror eftersom en enskild ledamots röst väger tyngre där."
+    vote_context: "Visar hur ledamöterna röstade per valkrets i %{beteckning} (%{avser})."
+    clear_vote: "← Visa istället efter ämne"
+    legend_low: "Lägre andel ja"
+    legend_high: "Högre andel ja"
+    no_data: "Inga voteringar med denna kategorisering ännu — fler importeras löpande."
+    support_rate: "andel ja"
+    by_district_cta: "Visa per valkrets →"
+    home_card:
+      title: "Jämför valkretsar"
+      body: "Upptäck om riksdagsledamöter från olika delar av landet röstar olika i en fråga."
+      cta: "Se kartan →"
+  insights:
+    title: "Roliga siffror"
+    subtitle: "Lite kuriosa ur voteringsdatan — inga rekommendationer, bara fakta."
+    attendance_note: "Bygger på närvaro i de %{total_votes} voteringar som importerats hittills. Endast ledamöter med registrerade röster i minst 9 av 10 av dem räknas med — annars skulle en ersättare som bara satt in för en enda votering ge en missvisande 0 eller 100 %."
+    most_present_heading: "Högst närvaro"
+    least_present_heading: "Lägst närvaro"
+    geography_cta: "← Se kartan över valkretsar istället"
+    home_card:
+      title: "Roliga siffror"
+      body: "Vilka ledamöter dyker upp mest — och minst — när det är dags att rösta?"
+      cta: "Se listan →"
+  cookies:
+    message: "Vi vill gärna använda Google Analytics för att förstå hur sidan används. Inget spåras förrän du godkänner det, och du kan när som helst ändra dig. Det skulle betyda mycket om du klickade Godkänn — det hjälper oss se om sidan faktiskt används och vad som är värt att bygga vidare på."
+    accept: "Godkänn"
+    decline: "Avvisa"
+    manage: "Cookie-inställningar"
+    banner_aria: "Cookie-samtycke"
+  suggestions:
+    - "Hur röstade Sverigedemokraterna i budgeten för 2024?"
+    - "Hur ser Socialdemokraterna på skattesänkningar?"
+    - "Vad vill Moderaterna göra med skatten?"
+    - "Vad har riksdagen beslutat om organiserad brottslighet?"
+    - "Vad säger riksdagen om klimatanpassning?"

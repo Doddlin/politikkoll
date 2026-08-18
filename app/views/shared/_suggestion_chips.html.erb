@@ -1,0 +1,5 @@
+<div class="suggestions">
+  <% questions.each do |question| %>
+    <%= button_to question, chat_path, params: { question: question }, class: "suggestion" %>
+  <% end %>
+</div>

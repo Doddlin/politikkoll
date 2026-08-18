@@ -1,0 +1,5 @@
+<div class="locale-switcher">
+  <% I18n.available_locales.each do |locale| %>
+    <%= link_to locale.to_s.upcase, set_locale_path(locale: locale), class: "locale-link #{"active" if I18n.locale == locale}" %>
+  <% end %>
+</div>

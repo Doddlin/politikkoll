@@ -1,0 +1,59 @@
+<% content_for :title, "#{@document.titel.truncate(60)} — politikkoll" %>
+
+<main class="page docs">
+  <header class="top">
+    <div>
+      <div class="wordmark">politikkoll</div>
+    </div>
+    <div class="header-actions">
+      <%= render "shared/locale_switcher" %>
+      <%= link_to t("nav.home"), root_path, class: "home-link" %>
+    </div>
+  </header>
+
+  <%= link_to t("documents.back"), documents_path, class: "home-link back-link" %>
+
+  <article class="doc-detail">
+    <div class="doc-row-tags">
+      <% if @party %>
+        <span class="doc-tag" style="background: <%= @party.color %>"><%= @document.party_code %></span>
+      <% end %>
+      <span class="doc-tag area"><%= area_label(@document.organ) %></span>
+      <span class="doc-tag type"><%= t("documents.doktyp.#{@document.doktyp}", default: @document.doktyp) %></span>
+    </div>
+
+    <h1 class="doc-title"><%= @document.titel %></h1>
+    <p class="doc-meta">
+      <%= @document.beteckning %> · <%= @document.rm %>
+      <% if @party %> · <%= @party.name %><% end %>
+      <% if @document.published_at %> · <%= @document.published_at.strftime("%-d %B %Y") %><% end %>
+    </p>
+
+    <% if @document.full_text.present? %>
+      <div class="doc-fulltext"><%= format_document_text(@document.full_text) %></div>
+    <% else %>
+      <p class="section-hint"><%= t("documents.no_full_text") %></p>
+    <% end %>
+
+    <% if @related_votes&.any? %>
+      <section class="section">
+        <p class="section-heading"><%= t("documents.related_votes") %></p>
+        <% @related_votes.each do |vote| %>
+          <%= render "shared/vote_board", board: vote.board %>
+          <%= link_to t("geography.by_district_cta"), geography_path(votering_id: vote.votering_id), class: "browse-all-link" %>
+        <% end %>
+      </section>
+    <% end %>
+
+    <section class="section doc-chat">
+      <p class="section-heading"><%= t("documents.chat_heading") %></p>
+      <%= form_with url: chat_path, method: :post, class: "ask-form" do %>
+        <%= hidden_field_tag :document_id, @document.dok_id %>
+        <input type="text" name="question" placeholder="<%= t("documents.chat_placeholder") %>" autocomplete="off">
+        <button type="submit"><%= t("chat.submit") %></button>
+      <% end %>
+    </section>
+
+    <%= link_to @document.source_url, @document.source_url, target: "_blank", rel: "noopener", class: "cite source-link" %>
+  </article>
+</main>

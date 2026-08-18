@@ -1,0 +1,17 @@
+<div class="board">
+  <p class="board-label"><%= board[:beteckning] %> <%= board[:rm] %>, <%= t("vote_board.point") %> <%= board[:punkt] %></p>
+  <div class="board-row">
+    <% board[:seats].each do |seat| %>
+      <div class="seat">
+        <div class="sq <%= seat[:ballot] %>"><%= seat[:party] %></div>
+        <div class="pct"><%= ballot_label(seat[:ballot]) %></div>
+      </div>
+    <% end %>
+  </div>
+  <div class="legend">
+    <span><i class="ja"></i><%= ballot_label("ja") %></span>
+    <span><i class="nej"></i><%= ballot_label("nej") %></span>
+    <span><i class="avstar"></i><%= ballot_label("avstar") %></span>
+    <span><i class="franvarande"></i><%= ballot_label("franvarande") %></span>
+  </div>
+</div>
