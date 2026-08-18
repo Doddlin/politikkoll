@@ -14,11 +14,6 @@
 
   <p class="section-hint docs-subtitle"><%= t("documents.subtitle") %></p>
 
-  <div class="callout-banner">
-    <p><%= t("documents.geography_teaser") %></p>
-    <%= link_to t("documents.geography_teaser_cta"), geography_path, class: "browse-all-link" %>
-  </div>
-
   <%= form_with url: documents_path, method: :get, class: "filter-bar" do %>
     <select name="area" onchange="this.form.requestSubmit()">
       <option value=""><%= t("documents.all_areas") %></option>

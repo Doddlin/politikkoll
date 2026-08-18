@@ -146,8 +146,6 @@ sv:
     chat_context: "Angående %{beteckning} (\"%{title}\"): %{question}"
     back: "← Alla dokument"
     browse_all: "Bläddra bland alla dokument →"
-    geography_teaser: "Vill du se hur olika delar av landet röstat, istället för att bläddra parti för parti?"
-    geography_teaser_cta: "Utforska kartan över valkretsar →"
   geography:
     title: "Röster efter valkrets"
     subtitle: "Hur röstade riksdagsledamöterna i olika delar av landet — baserat på deras egen valkrets, inte partitillhörighet."
@@ -158,18 +156,12 @@ sv:
     legend_high: "Högre andel ja"
     no_data: "Inga voteringar med denna kategorisering ännu — fler importeras löpande."
     support_rate: "andel ja"
-    by_district_cta: "Visa per valkrets →"
-    home_card:
-      title: "Jämför valkretsar"
-      body: "Upptäck om riksdagsledamöter från olika delar av landet röstar olika i en fråga."
-      cta: "Se kartan →"
   insights:
     title: "Roliga siffror"
     subtitle: "Lite kuriosa ur voteringsdatan — inga rekommendationer, bara fakta."
     attendance_note: "Bygger på närvaro i de %{total_votes} voteringar som importerats hittills. Endast ledamöter med registrerade röster i minst 9 av 10 av dem räknas med — annars skulle en ersättare som bara satt in för en enda votering ge en missvisande 0 eller 100 %."
     most_present_heading: "Högst närvaro"
     least_present_heading: "Lägst närvaro"
-    geography_cta: "← Se kartan över valkretsar istället"
     home_card:
       title: "Roliga siffror"
       body: "Vilka ledamöter dyker upp mest — och minst — när det är dags att rösta?"

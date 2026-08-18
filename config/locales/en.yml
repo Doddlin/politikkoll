@@ -146,8 +146,6 @@ en:
     chat_context: "Regarding %{beteckning} (\"%{title}\"): %{question}"
     back: "← All documents"
     browse_all: "Browse all documents →"
-    geography_teaser: "Want to see how different parts of the country voted, instead of browsing party by party?"
-    geography_teaser_cta: "Explore the district map →"
   geography:
     title: "Votes by district"
     subtitle: "How did members of parliament vote in different parts of the country — based on their own electoral district, not party."
@@ -158,18 +156,12 @@ en:
     legend_high: "Higher yes share"
     no_data: "No votes with this categorization yet — more are imported continuously."
     support_rate: "yes share"
-    by_district_cta: "Show by district →"
-    home_card:
-      title: "Compare districts"
-      body: "See whether members of parliament from different parts of the country vote differently on an issue."
-      cta: "See the map →"
   insights:
     title: "Fun numbers"
     subtitle: "A bit of trivia from the voting data — no recommendations, just facts."
     attendance_note: "Based on attendance across the %{total_votes} votes imported so far. Only members with recorded votes for at least 9 of every 10 of them are ranked — otherwise a substitute who only sat in for a single vote would show a misleading 0% or 100%."
     most_present_heading: "Highest attendance"
     least_present_heading: "Lowest attendance"
-    geography_cta: "← See the district map instead"
     home_card:
       title: "Fun numbers"
       body: "Which members show up most — and least — when it's time to vote?"

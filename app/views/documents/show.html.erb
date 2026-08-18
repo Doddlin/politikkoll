@@ -40,7 +40,6 @@
         <p class="section-heading"><%= t("documents.related_votes") %></p>
         <% @related_votes.each do |vote| %>
           <%= render "shared/vote_board", board: vote.board %>
-          <%= link_to t("geography.by_district_cta"), geography_path(votering_id: vote.votering_id), class: "browse-all-link" %>
         <% end %>
       </section>
     <% end %>
