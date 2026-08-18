@@ -10,6 +10,42 @@ sv:
     home: Hem
     new_conversation: Ny konversation
     new_conversation_confirm: Starta om konversationen?
+  footer:
+    disclaimer: "politikkoll är ett oberoende projekt och är varken anslutet till eller godkänt av Sveriges riksdag, SCB eller något politiskt parti. Informationen är tänkt som ett hjälpmedel, inte facit — kontrollera alltid viktiga beslut mot primärkällorna."
+    read_disclaimer: "Läs hela ansvarsfriskrivningen →"
+    source_riksdagen: "Riksdagens öppna data"
+    source_scb: "SCB:s statistikdatabas"
+  disclaimer_modal:
+    aria: "Viktig information innan du börjar"
+    title: "Innan du börjar"
+    body: "politikkoll är ett oberoende hjälpmedel, inte facit. Svaren bygger på AI och riktiga källor, men kan ändå innehålla fel — kontrollera alltid viktiga beslut mot primärkällan, och använd aldrig politikkoll som din enda källa."
+    read_more: "Läs mer"
+    dismiss: "Jag förstår"
+  disclaimer:
+    title: "Ansvarsfriskrivning"
+    subtitle: "Läs det här innan du fattar beslut baserat på något du hittar här."
+    independent:
+      heading: "Ett oberoende projekt"
+      body: "politikkoll drivs inte av och är inte anslutet till Sveriges riksdag, Statistiska centralbyrån (SCB) eller något politiskt parti. Vi återger offentligt tillgänglig information från dessa källor, men de ansvarar inte för vårt innehåll och har inte granskat eller godkänt det."
+    ai_generated:
+      heading: "AI-genererade svar"
+      body: "Chattfunktionen bygger på en AI-språkmodell som svarar utifrån verkliga källor — riksdagens öppna data, SCB:s statistik och partiernas egna valmanifest — och länkar alltid till dem. Trots det kan AI-genererad text innehålla fel, feltolkningar eller utelämna viktig kontext. Lita aldrig blint på ett svar — kontrollera alltid mot den länkade källan innan du drar slutsatser."
+    not_sole_source:
+      heading: "Inte den enda grunden för beslut"
+      body: "Innehållet på politikkoll är ett hjälpmedel för att förstå politik — inte juridisk, ekonomisk eller annan rådgivning, och inte facit för hur du bör rösta eller agera. Använd aldrig politikkoll som din enda källa inför ett viktigt beslut."
+    neutrality:
+      heading: "Vi rekommenderar aldrig"
+      body: "politikkoll föreslår aldrig ett parti eller ett sätt att rösta. Vi visar bara vad de tillgängliga källorna säger, och lämnar tolkningen till dig."
+    coverage:
+      heading: "Ofullständig data"
+      body: "Riksdagens voteringar, dokument och partiernas valmanifest importeras och bearbetas löpande. Inte allt är importerat än, och delar av historiken kan saknas eller vara försenade. Frånvaron av ett svar betyder inte att inget hänt — bara att vi inte hunnit importera det än."
+    no_warranty:
+      heading: "Inga garantier"
+      body: "Innehållet tillhandahålls i befintligt skick, utan garantier av något slag. I den utsträckning lagen tillåter ansvarar vi inte för skador som uppstår till följd av att du använder eller förlitar dig på informationen på politikkoll."
+    errors:
+      heading: "Hittat ett fel?"
+      body_html: "Hör gärna av dig via projektets %{link} så rättar vi det så fort vi kan."
+      link_text: "GitHub-repo"
   home:
     tagline: "Fråga fritt om hur partierna röstat och resonerat. Vi rekommenderar aldrig — bara visar källorna."
     resume_banner: "Du har en pågående konversation — fortsätt där du var"

@@ -10,6 +10,42 @@ en:
     home: Home
     new_conversation: New conversation
     new_conversation_confirm: Restart the conversation?
+  footer:
+    disclaimer: "politikkoll is an independent project and is neither affiliated with nor endorsed by the Swedish Riksdag, Statistics Sweden, or any political party. The information here is a starting point, not the final word — always check important decisions against the primary sources."
+    read_disclaimer: "Read the full disclaimer →"
+    source_riksdagen: "Riksdagen open data"
+    source_scb: "Statistics Sweden database"
+  disclaimer_modal:
+    aria: "Important information before you begin"
+    title: "Before you begin"
+    body: "politikkoll is an independent tool, not the final word. Answers are built on AI and real sources, but can still contain mistakes — always check important decisions against the primary source, and never use politikkoll as your only one."
+    read_more: "Read more"
+    dismiss: "I understand"
+  disclaimer:
+    title: "Disclaimer"
+    subtitle: "Read this before basing any decision on something you find here."
+    independent:
+      heading: "An independent project"
+      body: "politikkoll is not operated by, and is not affiliated with, the Swedish Riksdag, Statistics Sweden (SCB), or any political party. We reproduce publicly available information from those sources, but they are not responsible for our content and have not reviewed or endorsed it."
+    ai_generated:
+      heading: "AI-generated answers"
+      body: "The chat feature is built on an AI language model that answers from real sources — Riksdagen's open data, Statistics Sweden's statistics, and the parties' own election manifestos — and always links to them. Even so, AI-generated text can contain errors, misinterpretations, or omit important context. Never blindly trust an answer — always check it against the linked source before drawing conclusions."
+    not_sole_source:
+      heading: "Not the sole basis for a decision"
+      body: "The content on politikkoll is a tool for understanding politics — not legal, financial, or other advice, and not the final word on how you should vote or act. Never use politikkoll as your only source before an important decision."
+    neutrality:
+      heading: "We never recommend"
+      body: "politikkoll never suggests a party or a way to vote. We only show what the available sources say, and leave the interpretation to you."
+    coverage:
+      heading: "Incomplete data"
+      body: "Riksdagen's votes, documents, and the parties' election manifestos are imported and processed on an ongoing basis. Not everything has been imported yet, and parts of the historical record may be missing or delayed. The absence of an answer doesn't mean nothing happened — only that we haven't imported it yet."
+    no_warranty:
+      heading: "No warranty"
+      body: "The content is provided as-is, without warranties of any kind. To the extent permitted by law, we are not liable for damages arising from your use of, or reliance on, the information on politikkoll."
+    errors:
+      heading: "Found a mistake?"
+      body_html: "Feel free to reach out via the project's %{link} and we'll fix it as soon as we can."
+      link_text: "GitHub repo"
   home:
     tagline: "Ask freely about how parties have voted and argued. We never recommend — we only show the sources."
     resume_banner: "You have an ongoing conversation — continue where you left off"

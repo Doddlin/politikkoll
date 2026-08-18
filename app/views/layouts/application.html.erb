@@ -77,6 +77,22 @@
   <body>
     <%= yield %>
 
+    <%= render "shared/footer" %>
+
+    <div data-controller="disclaimer-modal">
+      <div class="disclaimer-modal" data-disclaimer-modal-target="modal" hidden role="dialog" aria-modal="true" aria-label="<%= t("disclaimer_modal.aria") %>">
+        <div class="disclaimer-modal-backdrop" data-action="click->disclaimer-modal#dismiss"></div>
+        <div class="disclaimer-modal-card">
+          <p class="disclaimer-modal-title"><%= t("disclaimer_modal.title") %></p>
+          <p class="disclaimer-modal-body"><%= t("disclaimer_modal.body") %></p>
+          <div class="disclaimer-modal-actions">
+            <%= link_to t("disclaimer_modal.read_more"), disclaimer_path, class: "browse-all-link" %>
+            <button type="button" class="cta-primary" data-action="disclaimer-modal#dismiss"><%= t("disclaimer_modal.dismiss") %></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <% if Rails.env.production? %>
       <%# Google Analytics is NOT loaded here — the gtag.js script tag itself
           isn't injected into the page until the visitor explicitly accepts,

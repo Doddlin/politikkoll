@@ -1007,3 +1007,86 @@ body::after { width: 380px; height: 380px; bottom: -160px; left: -140px; backgro
 }
 .cookie-reopen[hidden] { display: none; }
 .cookie-reopen:hover { border-color: var(--accent-a); color: var(--accent-ink); }
+
+/* Site footer */
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+  padding: 1.75rem 1.5rem 2.5rem;
+}
+.site-footer-inner {
+  max-width: 760px;
+  margin: 0 auto;
+}
+.site-footer-disclaimer {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ink-faint);
+  margin: 0 0 10px;
+  max-width: 72ch;
+}
+.site-footer-disclaimer a {
+  color: var(--ink-faint);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.site-footer-disclaimer a:hover { color: var(--accent-ink); }
+.site-footer-sources {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin: 0;
+}
+.site-footer-sources a { color: var(--ink-faint); text-decoration: none; }
+.site-footer-sources a:hover { color: var(--accent-ink); text-decoration: underline; }
+
+/* Disclaimer modal — separate from the cookie banner (different topic,
+   different treatment): a centered overlay, not a bottom bar, and it isn't
+   gated to production since it's not privacy-sensitive like GA is. */
+
+.disclaimer-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.disclaimer-modal[hidden] { display: none; }
+.disclaimer-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(22, 26, 46, 0.5);
+  backdrop-filter: blur(2px);
+}
+.disclaimer-modal-card {
+  position: relative;
+  background: var(--surface-solid);
+  border: 1px solid var(--border-strong);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 24px 26px;
+  max-width: 440px;
+  width: 100%;
+}
+.disclaimer-modal-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 19px;
+  margin: 0 0 10px;
+}
+.disclaimer-modal-body {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin: 0 0 18px;
+}
+.disclaimer-modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}

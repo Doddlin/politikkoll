@@ -1,0 +1,13 @@
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <p class="site-footer-disclaimer">
+      <%= t("footer.disclaimer") %>
+      <%= link_to t("footer.read_disclaimer"), disclaimer_path %>
+    </p>
+    <p class="site-footer-sources">
+      <%= link_to t("footer.source_riksdagen"), "https://data.riksdagen.se", target: "_blank", rel: "noopener" %>
+      ·
+      <%= link_to t("footer.source_scb"), "https://www.statistikdatabasen.scb.se", target: "_blank", rel: "noopener" %>
+    </p>
+  </div>
+</footer>

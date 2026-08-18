@@ -1,0 +1,34 @@
+<% content_for :title, "#{t("disclaimer.title")} — politikkoll" %>
+<% content_for :description, t("disclaimer.subtitle") %>
+
+<main class="page docs">
+  <header class="top">
+    <div>
+      <div class="wordmark">politikkoll</div>
+      <p class="tagline"><%= t("disclaimer.title") %></p>
+    </div>
+    <div class="header-actions">
+      <%= render "shared/locale_switcher" %>
+      <%= link_to t("nav.home"), root_path, class: "home-link" %>
+    </div>
+  </header>
+
+  <p class="section-hint docs-subtitle"><%= t("disclaimer.subtitle") %></p>
+
+  <% %i[independent ai_generated not_sole_source neutrality coverage no_warranty].each do |section| %>
+    <section class="section">
+      <p class="section-heading"><%= t("disclaimer.#{section}.heading") %></p>
+      <p class="bubble-text"><%= t("disclaimer.#{section}.body") %></p>
+    </section>
+  <% end %>
+
+  <section class="section">
+    <p class="section-heading"><%= t("disclaimer.errors.heading") %></p>
+    <p class="bubble-text">
+      <%= t(
+        "disclaimer.errors.body_html",
+        link: link_to(t("disclaimer.errors.link_text"), "https://github.com/Doddlin/politikkoll", target: "_blank", rel: "noopener")
+      ) %>
+    </p>
+  </section>
+</main>
