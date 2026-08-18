@@ -6,6 +6,14 @@ set -euo pipefail
 
 cd /var/www/politikkoll
 
+# The systemd units get their env vars from EnvironmentFile=, which only
+# applies when systemd itself starts the process — this script runs in a
+# plain shell instead, so it never sees POLITIKKOLL_DATABASE_HOST/
+# _PASSWORD or RAILS_MASTER_KEY unless it loads the same file itself.
+set -a
+source /var/www/politikkoll.env
+set +a
+
 echo "==> Fetching latest main"
 git fetch origin main
 # reset --hard, not pull — this checkout is only ever touched by this
