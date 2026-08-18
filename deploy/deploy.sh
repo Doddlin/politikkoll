@@ -36,6 +36,10 @@ echo "==> Precompiling assets"
 RAILS_ENV=production bin/rails assets:precompile
 
 echo "==> Restarting services"
-sudo systemctl restart politikkoll-web politikkoll-jobs
+# Two separate sudo calls, not one — sudoers matches the exact command
+# string, and the scoped rule only grants each unit's restart individually,
+# not the combined "restart web jobs" form.
+sudo systemctl restart politikkoll-web
+sudo systemctl restart politikkoll-jobs
 
 echo "==> Deployed $(git rev-parse --short HEAD)"

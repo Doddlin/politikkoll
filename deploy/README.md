@@ -140,7 +140,8 @@ bundle config set --local without development test
 bundle install
 RAILS_ENV=production bin/rails db:migrate
 RAILS_ENV=production bin/rails assets:precompile
-sudo systemctl restart politikkoll-web politikkoll-jobs
+sudo systemctl restart politikkoll-web
+sudo systemctl restart politikkoll-jobs
 ```
 
 Or the same steps as one command: `bash deploy/deploy.sh` from
