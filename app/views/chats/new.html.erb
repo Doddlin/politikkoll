@@ -1,0 +1,35 @@
+<% content_for :title, t("layout.title") %>
+
+<main class="page" data-controller="chat" data-chat-thinking-label-value="<%= t("chat.thinking") %>">
+  <header class="top">
+    <div>
+      <div class="wordmark">politikkoll</div>
+      <p class="tagline"><%= t("home.tagline") %></p>
+    </div>
+    <div class="header-actions">
+      <%= render "shared/locale_switcher" %>
+      <%= link_to t("nav.home"), root_path, class: "home-link" %>
+      <%= button_to t("nav.new_conversation"), chat_path, method: :delete, class: "reset-btn", form: { data: { turbo_confirm: t("nav.new_conversation_confirm") } } %>
+    </div>
+  </header>
+
+  <div class="thread" id="thread" data-chat-target="thread">
+    <% if @conversation.chat_messages.none? %>
+      <div class="empty-state" id="empty-state" data-chat-target="emptyState">
+        <p class="empty-heading"><%= t("chat.empty_heading") %></p>
+        <%= render "shared/suggestion_chips", questions: suggested_questions %>
+      </div>
+    <% end %>
+
+    <%= render partial: "chats/message", collection: @conversation.chat_messages, as: :message %>
+
+    <% if @error %>
+      <%= render "chats/error_bubble", error: @error %>
+    <% end %>
+  </div>
+
+  <%= form_with url: chat_path, method: :post, class: "ask-form", data: { action: "turbo:submit-start->chat#thinking turbo:submit-end->chat#done" } do |f| %>
+    <input type="text" name="question" placeholder="<%= t("chat.input_placeholder") %>" autofocus autocomplete="off" data-chat-target="input">
+    <button type="submit" data-chat-target="submit"><%= t("chat.submit") %></button>
+  <% end %>
+</main>

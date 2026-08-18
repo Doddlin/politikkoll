@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  votering_id: MyString
+  rm: MyString
+  beteckning: MyString
+  punkt: 1
+  dok_id: MyString
+  avser: MyString
+  voted_on: 2026-08-17
+
+two:
+  votering_id: MyString
+  rm: MyString
+  beteckning: MyString
+  punkt: 1
+  dok_id: MyString
+  avser: MyString
+  voted_on: 2026-08-17

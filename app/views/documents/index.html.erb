@@ -1,0 +1,73 @@
+<% content_for :title, "#{t("documents.title")} — politikkoll" %>
+
+<main class="page docs">
+  <header class="top">
+    <div>
+      <div class="wordmark">politikkoll</div>
+      <p class="tagline"><%= t("documents.title") %></p>
+    </div>
+    <div class="header-actions">
+      <%= render "shared/locale_switcher" %>
+      <%= link_to t("nav.home"), root_path, class: "home-link" %>
+    </div>
+  </header>
+
+  <p class="section-hint docs-subtitle"><%= t("documents.subtitle") %></p>
+
+  <div class="callout-banner">
+    <p><%= t("documents.geography_teaser") %></p>
+    <%= link_to t("documents.geography_teaser_cta"), geography_path, class: "browse-all-link" %>
+  </div>
+
+  <%= form_with url: documents_path, method: :get, class: "filter-bar" do %>
+    <select name="area" onchange="this.form.requestSubmit()">
+      <option value=""><%= t("documents.all_areas") %></option>
+      <% @areas.each do |area| %>
+        <option value="<%= area %>" <%= "selected" if @selected_area == area %>><%= area_label(area) %></option>
+      <% end %>
+    </select>
+
+    <select name="party" onchange="this.form.requestSubmit()">
+      <option value=""><%= t("documents.all_parties") %></option>
+      <% @parties.each do |party| %>
+        <option value="<%= party.code %>" <%= "selected" if @selected_party == party.code %>><%= party.name %></option>
+      <% end %>
+    </select>
+
+    <select name="doktyp" onchange="this.form.requestSubmit()">
+      <option value=""><%= t("documents.all_types") %></option>
+      <option value="mot" <%= "selected" if @selected_doktyp == "mot" %>><%= t("documents.doktyp.mot") %></option>
+      <option value="bet" <%= "selected" if @selected_doktyp == "bet" %>><%= t("documents.doktyp.bet") %></option>
+    </select>
+  <% end %>
+
+  <% if @documents.none? %>
+    <p class="section-hint"><%= t("documents.no_results") %></p>
+  <% else %>
+    <div class="doc-list">
+      <% @documents.each do |document| %>
+        <% party = Party.find_by(code: document.party_code) %>
+        <%= link_to document_path(document), class: "doc-row" do %>
+          <span class="doc-row-tags">
+            <% if party %>
+              <span class="doc-tag" style="background: <%= party.color %>"><%= document.party_code %></span>
+            <% end %>
+            <span class="doc-tag area"><%= area_label(document.organ) %></span>
+          </span>
+          <span class="doc-row-title"><%= document.titel %></span>
+          <span class="doc-row-meta"><%= document.beteckning %> · <%= document.published_at&.strftime("%-d %b %Y") %></span>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="pagination">
+      <% if @page > 1 %>
+        <%= link_to t("documents.prev"), documents_path(request.query_parameters.merge(page: @page - 1)), class: "home-link" %>
+      <% end %>
+      <span class="pagination-label"><%= t("documents.page", page: @page, total: @total_pages) %></span>
+      <% if @page < @total_pages %>
+        <%= link_to t("documents.next"), documents_path(request.query_parameters.merge(page: @page + 1)), class: "home-link" %>
+      <% end %>
+    </div>
+  <% end %>
+</main>

@@ -1,0 +1,147 @@
+en:
+  layout:
+    title: politikkoll
+  nav:
+    home: Home
+    new_conversation: New conversation
+    new_conversation_confirm: Restart the conversation?
+  home:
+    tagline: "Ask freely about how parties have voted and argued. We never recommend — we only show the sources."
+    resume_banner: "You have an ongoing conversation — continue where you left off"
+    hero:
+      eyebrow: "Riksdagen · Statistics Sweden · Election manifestos"
+      headline: "Do the parties keep their promises?"
+      subhead: "Ask freely about election promises, votes, and what has actually happened in parliament. We never recommend — we only show the sources."
+      cta: "Go to the chat"
+      scroll_hint: "or explore below ↓"
+      photo_credit: "Photo: %{name} / Unsplash"
+    numbers:
+      heading: "The sources, in numbers"
+      documents: "documents indexed"
+      searchable: "searchable with AI search"
+      members: "members of parliament"
+      votes: "votes imported — more every hour"
+    features:
+      heading: "What can you do here?"
+      compare:
+        title: "Compare promise with practice"
+        body: "See whether a party has actually voted in line with its own election manifesto."
+        cta: "Compare →"
+        question: "Have the Moderates voted in line with their promise to cut taxes?"
+      topic:
+        title: "Search by topic"
+        body: "Ask about a topic and get an answer straight from motions, committee reports, and manifestos."
+        cta: "Ask about a topic →"
+        question: "How do the Social Democrats feel about tax cuts?"
+      vote:
+        title: "Follow a vote"
+        body: "See exactly how each party voted on a specific question, with a source for every number."
+        cta: "See a vote →"
+        question: "How did the parties vote on FiU1, the budget for the 2023/24 parliamentary session?"
+    closing:
+      heading: "Ready to check for yourself?"
+      cta: "Start chatting"
+    stats:
+      votes: votes
+      committee_reports: committee reports
+      motions: motions
+      parties: parties
+    explore_heading: "Or try it directly"
+    motions_heading: "Motions to explore"
+    motions_hint: "Full-text searchable right now — more added over time."
+    unknown_submitter: members of parliament
+    multiple_parties: several parties
+    motion_question: "Tell me about the motion \"%{title}\" submitted by %{submitter}, and what it proposes."
+  chat:
+    empty_heading: "What are you curious about?"
+    answer_label: "Answer, with sources"
+    input_placeholder: "Ask about a party, a vote, or a topic…"
+    submit: Ask
+    thinking: "Thinking …"
+  vote_board:
+    point: point
+  ballots:
+    ja: yes
+    nej: no
+    avstar: abstained
+    franvarande: absent
+  areas:
+    FiU: "Finance & budget"
+    JuU: "Crime & justice"
+    SkU: Taxes
+    KU: "Constitution & democracy"
+    SoU: "Health & social care"
+    CU: "Housing & civil law"
+    TU: "Transport & infrastructure"
+    NU: Business
+    SfU: "Social insurance & pensions"
+    MJU: "Environment & agriculture"
+    UbU: Education
+    UU: "Foreign affairs"
+    FöU: Defence
+    KrU: Culture
+    AU: "Labour market"
+    UFöU: "Joint foreign & defence"
+  documents:
+    title: "Browse documents"
+    subtitle: "Parliament's own committee categories — not a guess."
+    all_areas: "All topics"
+    all_parties: "All parties"
+    doktyp:
+      mot: Motions
+      bet: "Committee reports"
+    all_types: "All types"
+    no_results: "No documents match this filter."
+    prev: "← Previous"
+    next: "Next →"
+    page: "Page %{page} of %{total}"
+    no_full_text: "Full text hasn't been imported for this document yet."
+    related_votes: "Related votes"
+    ask_cta: "Ask about this document →"
+    ask_question: "Tell me about \"%{title}\" (%{beteckning}) and what it means."
+    chat_heading: "Ask about this document"
+    chat_placeholder: "E.g. What does it propose? How did the parties vote on it?"
+    chat_default_question: "Tell me about it and what it means."
+    chat_context: "Regarding %{beteckning} (\"%{title}\"): %{question}"
+    back: "← All documents"
+    browse_all: "Browse all documents →"
+    geography_teaser: "Want to see how different parts of the country voted, instead of browsing party by party?"
+    geography_teaser_cta: "Explore the district map →"
+  geography:
+    title: "Votes by district"
+    subtitle: "How did members of parliament vote in different parts of the country — based on their own electoral district, not party."
+    interpretation_note: "The map shows how sitting members of parliament voted, grouped by their electoral district — not how voters in that region voted in an election. Members almost always vote along party lines, so the color mostly reflects which parties hold seats in that district, not an independent regional stance. Smaller districts (few seats, like Gotland) also produce noisier numbers, since a single member's vote carries more weight there."
+    vote_context: "Showing how members voted by district on %{beteckning} (%{avser})."
+    clear_vote: "← Show by topic instead"
+    legend_low: "Lower yes share"
+    legend_high: "Higher yes share"
+    no_data: "No votes with this categorization yet — more are imported continuously."
+    support_rate: "yes share"
+    by_district_cta: "Show by district →"
+    home_card:
+      title: "Compare districts"
+      body: "See whether members of parliament from different parts of the country vote differently on an issue."
+      cta: "See the map →"
+  insights:
+    title: "Fun numbers"
+    subtitle: "A bit of trivia from the voting data — no recommendations, just facts."
+    attendance_note: "Based on attendance across the %{total_votes} votes imported so far. Only members with recorded votes for at least 9 of every 10 of them are ranked — otherwise a substitute who only sat in for a single vote would show a misleading 0% or 100%."
+    most_present_heading: "Highest attendance"
+    least_present_heading: "Lowest attendance"
+    geography_cta: "← See the district map instead"
+    home_card:
+      title: "Fun numbers"
+      body: "Which members show up most — and least — when it's time to vote?"
+      cta: "See the list →"
+  cookies:
+    message: "We'd like to use Google Analytics to understand how the site is used. Nothing is tracked until you say yes, and you can change your mind anytime. It would mean a lot if you clicked Accept — it helps us see whether the site is actually being used and what's worth building next."
+    accept: "Accept"
+    decline: "Decline"
+    manage: "Cookie settings"
+    banner_aria: "Cookie consent"
+  suggestions:
+    - "How did the Sweden Democrats vote on the 2024 budget?"
+    - "How do the Social Democrats feel about tax cuts?"
+    - "What do the Moderates want to do about taxes?"
+    - "What has parliament decided about organized crime?"
+    - "What does parliament say about climate adaptation?"

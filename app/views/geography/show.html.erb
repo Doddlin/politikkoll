@@ -1,0 +1,99 @@
+<% content_for :title, "#{t("geography.title")} — politikkoll" %>
+
+<main class="page docs">
+  <header class="top">
+    <div>
+      <div class="wordmark">politikkoll</div>
+      <p class="tagline"><%= t("geography.title") %></p>
+    </div>
+    <div class="header-actions">
+      <%= render "shared/locale_switcher" %>
+      <%= link_to t("nav.home"), root_path, class: "home-link" %>
+    </div>
+  </header>
+
+  <p class="section-hint docs-subtitle"><%= t("geography.subtitle") %></p>
+
+  <div class="geo-note">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 11v5.5M12 8v.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <p><%= t("geography.interpretation_note") %></p>
+  </div>
+
+  <% if @vote %>
+    <div class="callout-banner">
+      <p><%= t("geography.vote_context", beteckning: @vote.beteckning, avser: @vote.avser) %></p>
+      <%= link_to t("geography.clear_vote"), geography_path, class: "home-link" %>
+    </div>
+  <% else %>
+    <%= form_with url: geography_path, method: :get, class: "filter-bar" do %>
+      <select name="area" onchange="this.form.requestSubmit()">
+        <option value=""><%= t("documents.all_areas") %></option>
+        <% @areas.each do |area| %>
+          <option value="<%= area %>" <%= "selected" if @selected_area == area %>><%= area_label(area) %></option>
+        <% end %>
+      </select>
+    <% end %>
+  <% end %>
+
+  <% if @rows.empty? %>
+    <p class="section-hint"><%= t("geography.no_data") %></p>
+  <% else %>
+    <div class="geo-legend">
+      <span><%= t("geography.legend_low") %></span>
+      <div class="geo-gradient"></div>
+      <span><%= t("geography.legend_high") %></span>
+    </div>
+
+    <svg viewBox="<%= @map.view_box %>" class="geo-map" role="img" aria-label="<%= t("geography.title") %>">
+      <% @map.paths.each do |name, d| %>
+        <% row = @rows_by_constituency[name] %>
+        <path
+          d="<%= d %>"
+          fill-rule="evenodd"
+          class="geo-district<%= " no-data" unless row&.support_rate %>"
+          style="<%= "--rate:#{row.support_rate}" if row&.support_rate %>"
+        ><title><%= name %><% if row&.support_rate %> — <%= number_to_percentage(row.support_rate * 100, precision: 0) %> <%= t("geography.support_rate") %><% end %></title></path>
+      <% end %>
+    </svg>
+
+    <div class="legend geo-row-legend">
+      <span><i class="ja"></i><%= t("ballots.ja") %></span>
+      <span><i class="nej"></i><%= t("ballots.nej") %></span>
+      <span><i class="avstar"></i><%= t("ballots.avstar") %></span>
+      <span><i class="franvarande"></i><%= t("ballots.franvarande") %></span>
+    </div>
+
+    <div class="geo-table">
+      <% @rows.each do |row| %>
+        <div class="geo-row">
+          <p class="geo-row-name"><%= row.constituency %></p>
+          <div class="geo-bar">
+            <% if row.total.positive? %>
+              <% %w[ja nej avstar franvarande].each do |ballot| %>
+                <% count = row.public_send(ballot) %>
+                <% next unless count.positive? %>
+                <div class="geo-bar-segment <%= ballot %>" style="width: <%= (count * 100.0 / row.total).round(2) %>%" tabindex="0">
+                  <div class="geo-segment-tip">
+                    <p class="geo-segment-tip-label"><%= t("ballots.#{ballot}") %> · <%= count %></p>
+                    <% row.party_breakdown[ballot].each do |party_code, party_count| %>
+                      <span class="geo-segment-tip-row">
+                        <i style="background: <%= @parties_by_code[party_code]&.color || "var(--ink-faint)" %>"></i>
+                        <%= party_code %> <%= party_count %>
+                      </span>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+          <p class="geo-row-pct"><%= row.support_rate ? number_to_percentage(row.support_rate * 100, precision: 0) : "—" %></p>
+          <p class="geo-row-counts">
+            <%= t("ballots.ja") %> <%= row.ja %> · <%= t("ballots.nej") %> <%= row.nej %> · <%= t("ballots.avstar") %> <%= row.avstar %> · <%= t("ballots.franvarande") %> <%= row.franvarande %>
+          </p>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= link_to t("insights.home_card.cta"), insights_path, class: "browse-all-link" %>
+</main>

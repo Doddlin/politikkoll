@@ -1,0 +1,14 @@
+<%= turbo_stream.remove "thinking-bubble" %>
+<%= turbo_stream.remove "empty-state" %>
+
+<% if @error %>
+  <%= turbo_stream.append "thread" do %>
+    <%= render "chats/error_bubble", error: @error %>
+  <% end %>
+<% else %>
+  <% @messages.each do |message| %>
+    <%= turbo_stream.append "thread" do %>
+      <%= render "chats/message", message: message %>
+    <% end %>
+  <% end %>
+<% end %>

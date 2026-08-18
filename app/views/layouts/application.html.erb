@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Politikkoll" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Politikkoll">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Propshaft doesn't process ERB inside .css files, so @font-face (which
+        needs asset_path for the fingerprinted font URL) lives here instead. %>
+    <style>
+      @font-face {
+        font-family: 'Archivo';
+        font-weight: 400 900;
+        font-style: normal;
+        font-display: swap;
+        src: url(<%= asset_path("archivo-variable.woff2") %>) format('woff2');
+      }
+      @font-face {
+        font-family: 'Hanken Grotesk';
+        font-weight: 300 700;
+        font-style: normal;
+        font-display: swap;
+        src: url(<%= asset_path("hanken-grotesk-variable.woff2") %>) format('woff2');
+      }
+    </style>
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <%= yield %>
+
+    <% if Rails.env.production? %>
+      <%# Google Analytics is NOT loaded here — the gtag.js script tag itself
+          isn't injected into the page until the visitor explicitly accepts,
+          via cookie_consent_controller.js. Loading Google's script
+          unconditionally would already send data to Google before any
+          consent decision, which defeats the point of asking. %>
+      <div data-controller="cookie-consent" data-cookie-consent-measurement-id-value="G-868F00VDPQ">
+        <div class="cookie-banner" data-cookie-consent-target="banner" hidden role="dialog" aria-label="<%= t("cookies.banner_aria") %>">
+          <p class="cookie-banner-text"><%= t("cookies.message") %></p>
+          <div class="cookie-banner-actions">
+            <button type="button" class="cookie-btn decline" data-action="cookie-consent#decline"><%= t("cookies.decline") %></button>
+            <button type="button" class="cookie-btn accept" data-action="cookie-consent#accept"><%= t("cookies.accept") %></button>
+          </div>
+        </div>
+        <button type="button" class="cookie-reopen" data-cookie-consent-target="reopenLink" data-action="cookie-consent#reopen" hidden><%= t("cookies.manage") %></button>
+      </div>
+    <% end %>
+  </body>
+</html>

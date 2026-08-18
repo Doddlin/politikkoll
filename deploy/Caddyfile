@@ -1,0 +1,13 @@
+# Add this block to the existing systemd Caddy instance's Caddyfile on the
+# target box (this app does not run its own Caddy — it shares the one
+# already fronting other services). Caddy handles TLS (automatic
+# Let's Encrypt) and reverse-proxies to Puma in plain HTTP on 127.0.0.1,
+# matching config.assume_ssl/force_ssl in config/environments/production.rb.
+#
+# After editing the real Caddyfile: caddy validate --config <path>, then
+# systemctl reload caddy.
+
+politikkoll.se, www.politikkoll.se {
+    reverse_proxy 127.0.0.1:3002
+    encode zstd gzip
+}

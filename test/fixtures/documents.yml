@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  dok_id: MyString
+  rm: MyString
+  doktyp: MyString
+  subtyp: MyString
+  beteckning: MyString
+  titel: MyText
+  authors: MyString
+  organ: MyString
+  published_at: 2026-08-17
+  full_text: MyText
+  source_url: MyString
+
+two:
+  dok_id: MyString
+  rm: MyString
+  doktyp: MyString
+  subtyp: MyString
+  beteckning: MyString
+  titel: MyText
+  authors: MyString
+  organ: MyString
+  published_at: 2026-08-17
+  full_text: MyText
+  source_url: MyString
