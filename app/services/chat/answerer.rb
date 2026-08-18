@@ -106,7 +106,7 @@ module Chat
         message = response.dig("choices", 0, "message")
 
         if message["tool_calls"].blank?
-          answer = Answer.new(text: strip_markdown(message["content"]), sources: sources.uniq, vote_boards: vote_boards.first(MAX_BOARDS_PER_ANSWER))
+          answer = Answer.new(text: strip_markdown(extract_text(message["content"])), sources: sources.uniq, vote_boards: vote_boards.first(MAX_BOARDS_PER_ANSWER))
           break
         end
 
@@ -133,6 +133,23 @@ module Chat
     # the common cases rather than relying purely on prompt compliance.
     def strip_markdown(text)
       text.gsub(/\*\*(.+?)\*\*/, '\1').gsub(/\[(.+?)\]\(.+?\)/, '\1')
+    end
+
+    # message["content"] is normally a plain string, but was observed in
+    # production coming back as an array of content parts instead (crashed
+    # with NoMethodError on #gsub) — couldn't force a live reproduction to
+    # confirm the exact part shape (hit Mistral's rate limit trying), so
+    # this handles the general pattern other chat-completion APIs use for
+    # multi-part content ([{"type" => "text", "text" => "..."}, ...]) and
+    # falls back safely for anything else rather than risk crashing again.
+    def extract_text(content)
+      case content
+      when String then content
+      when Array
+        content.filter_map { |part| part.is_a?(Hash) ? (part["text"] || part["content"]) : part.to_s.presence }.join
+      when nil then ""
+      else content.to_s
+      end
     end
 
     def execute_tool(name, tool_call)
