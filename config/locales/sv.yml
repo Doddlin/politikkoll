@@ -60,7 +60,7 @@ sv:
       heading: "Källorna, i siffror"
       documents: "dokument indexerade"
       searchable: "sökbara med AI-sökning"
-      members: "riksdagsledamöter"
+      members: "riksdagsledamöter (inkl gamla och standins)"
       votes: "voteringar importerade — fler varje timme"
     features:
       heading: "Vad kan du göra här?"
