@@ -13,6 +13,8 @@ en:
   footer:
     disclaimer: "politikkoll is an independent project and is neither affiliated with nor endorsed by the Swedish Riksdag, Statistics Sweden, or any political party. The information here is a starting point, not the final word — always check important decisions against the primary sources."
     read_disclaimer: "Read the full disclaimer →"
+    how_it_works: "How politikkoll works →"
+    data_status: "Data status"
     source_riksdagen: "Riksdagen open data"
     source_scb: "Statistics Sweden database"
   disclaimer_modal:
@@ -46,6 +48,52 @@ en:
       heading: "Found a mistake?"
       body_html: "Feel free to reach out via the project's %{link} and we'll fix it as soon as we can."
       link_text: "GitHub repo"
+  how_it_works:
+    title: "How politikkoll works"
+    subtitle: "What actually happens behind the scenes when you ask a question."
+    what:
+      heading: "What is this?"
+      body: "politikkoll lets you ask freely about Swedish politics and get answers grounded in real sources — not in whatever an AI model happens to already believe about Swedish politics. You ask a question in the chat, and every claim in the answer is tied to a source you can click through to."
+    sources:
+      heading: "The sources"
+      body: "Three kinds of sources are used, and they're never blended together: the Riksdag's open data (motions, committee reports, and exactly how every member voted on every roll call), the parties' own election manifestos (what they say they want to do), and Statistics Sweden's (SCB) official statistics (what actually happened, independent of what any party claims). Promises, voting history, and reality are three different things, and politikkoll keeps them apart instead of collapsing them into one answer."
+    how_chat_works:
+      heading: "How an answer gets built"
+      body: "When you ask something, an AI model (Mistral) searches the imported data for whatever's actually relevant — it never draws on its own memory. If the search finds nothing, the model says so instead of guessing. If a question is about how a vote went, the real per-party breakdown is always shown as its own visual component, not just in text, so you can see exactly how each party voted."
+    no_recommendations:
+      heading: "We never recommend"
+      body: "politikkoll never suggests a party or a way to vote, and never takes a position on an issue. The goal is to make it easier to see what's actually been said and done — the interpretation is always yours."
+    ongoing:
+      heading: "The data keeps growing"
+      body: "Import and processing happen on an ongoing basis, covering roughly eight years of Riksdag data at a time. Not everything is imported or searchable yet — if the chat can't find anything on a topic, that usually just means that part hasn't been imported yet, not that nothing happened."
+    open_source:
+      heading: "Open source"
+      body_html: "All the code is openly available on %{link} — including exactly how the search, import, and AI calls work. No hidden magic."
+      link_text: "GitHub"
+    disclaimer_link:
+      body_html: "Also read the %{link} for the full caveats."
+      link_text: "disclaimer"
+  status:
+    title: "Data status"
+    subtitle: "Exactly what's been imported so far, riksmöte by riksmöte — updated live, not a snapshot."
+    totals:
+      heading: "Totals right now"
+    coverage:
+      heading: "Coverage by riksmöte"
+      body: "Betänkanden and motioner are picked up automatically as soon as they're published for the current riksmöte; older riksmöten are filled in by a manual backfill and may lag behind. If the chat says it has no data for a period, this table shows exactly why."
+      rm: "Riksmöte"
+      betankanden: "Betänkanden"
+      motioner: "Motioner"
+      latest_document: "Latest document"
+      voteringar: "Voteringar"
+      latest_vote: "Latest vote"
+      none: "—"
+    manifestos:
+      heading: "Election manifestos"
+      body: "Manifesto coverage by party and election year."
+      party: "Party"
+      election_year: "Election year"
+      chunks: "Indexed sections"
   home:
     tagline: "Ask freely about how parties have voted and argued. We never recommend — we only show the sources."
     resume_banner: "You have an ongoing conversation — continue where you left off"

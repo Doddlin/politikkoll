@@ -13,6 +13,8 @@ sv:
   footer:
     disclaimer: "politikkoll är ett oberoende projekt och är varken anslutet till eller godkänt av Sveriges riksdag, SCB eller något politiskt parti. Informationen är tänkt som ett hjälpmedel, inte facit — kontrollera alltid viktiga beslut mot primärkällorna."
     read_disclaimer: "Läs hela ansvarsfriskrivningen →"
+    how_it_works: "Så funkar politikkoll →"
+    data_status: "Dataläge"
     source_riksdagen: "Riksdagens öppna data"
     source_scb: "SCB:s statistikdatabas"
   disclaimer_modal:
@@ -46,6 +48,52 @@ sv:
       heading: "Hittat ett fel?"
       body_html: "Hör gärna av dig via projektets %{link} så rättar vi det så fort vi kan."
       link_text: "GitHub-repo"
+  how_it_works:
+    title: "Så funkar politikkoll"
+    subtitle: "Vad som faktiskt händer bakom kulisserna när du ställer en fråga."
+    what:
+      heading: "Vad är det här?"
+      body: "politikkoll är ett sätt att fråga fritt om svensk politik och få svar grundade i verkliga källor — inte i vad en AI-modell råkar tro sig veta om svensk politik sedan tidigare. Du ställer en fråga i chatten, och varje påstående i svaret är kopplat till en källa du kan klicka dig vidare till."
+    sources:
+      heading: "Källorna"
+      body: "Tre typer av källor används, och de blandas aldrig ihop: riksdagens öppna data (motioner, betänkanden och exakt hur varje ledamot röstat i varje omröstning), partiernas egna valmanifest (vad de säger att de vill göra), och SCB:s officiella statistik (vad som faktiskt hänt i verkligheten — oberoende av vad något parti påstår). Löften, röstningshistorik och verklighet är tre olika saker, och politikkoll håller isär dem istället för att blanda dem till ett enda svar."
+    how_chat_works:
+      heading: "Hur ett svar blir till"
+      body: "När du frågar något söker en AI-modell (Mistral) igenom den importerade datan efter det som faktiskt är relevant — den letar aldrig i sitt eget minne. Om sökningen inte hittar något säger modellen det, istället för att gissa. Om en fråga handlar om hur en omröstning gick visas alltid den riktiga röstfördelningen som en egen komponent, inte bara i text, så att du kan se exakt hur varje parti röstat."
+    no_recommendations:
+      heading: "Vi rekommenderar aldrig"
+      body: "politikkoll föreslår aldrig ett parti eller ett sätt att rösta, och tar aldrig ställning i en fråga. Målet är att göra det lättare att se vad som faktiskt sagts och gjorts — tolkningen är alltid din."
+    ongoing:
+      heading: "Datan växer hela tiden"
+      body: "Import och bearbetning pågår löpande, ungefär åtta års riksdagsdata bearbetas i taget. Inte allt är importerat eller sökbart än — om chatten inte hittar något om ett ämne betyder det oftast bara att den delen inte hunnit importeras, inte att inget hänt."
+    open_source:
+      heading: "Öppen källkod"
+      body_html: "All kod är öppet tillgänglig på %{link} — inklusive precis hur sökningen, importen och AI-anropen fungerar. Inget hokus pokus."
+      link_text: "GitHub"
+    disclaimer_link:
+      body_html: "Läs också %{link} för de fulla förbehållen."
+      link_text: "ansvarsfriskrivningen"
+  status:
+    title: "Dataläge"
+    subtitle: "Exakt vad som importerats hittills, riksmöte för riksmöte — visas live, inte en ögonblicksbild."
+    totals:
+      heading: "Totalt just nu"
+    coverage:
+      heading: "Täckning per riksmöte"
+      body: "Betänkanden och motioner hämtas automatiskt så fort de publiceras för det pågående riksmötet; äldre riksmöten fylls i via en manuell efterimport och kan ligga efter. Om chatten säger att den saknar data för en period visar den här tabellen exakt varför."
+      rm: "Riksmöte"
+      betankanden: "Betänkanden"
+      motioner: "Motioner"
+      latest_document: "Senaste dokument"
+      voteringar: "Voteringar"
+      latest_vote: "Senaste votering"
+      none: "—"
+    manifestos:
+      heading: "Valmanifest"
+      body: "Manifesttäckning per parti och valår."
+      party: "Parti"
+      election_year: "Valår"
+      chunks: "Indexerade avsnitt"
   home:
     tagline: "Fråga fritt om hur partierna röstat och resonerat. Vi rekommenderar aldrig — bara visar källorna."
     resume_banner: "Du har en pågående konversation — fortsätt där du var"

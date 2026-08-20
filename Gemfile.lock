@@ -417,6 +417,7 @@ DEPENDENCIES
   jbuilder
   kamal
   neighbor
+  nokogiri
   pg (~> 1.1)
   propshaft
   puma (>= 5.0)

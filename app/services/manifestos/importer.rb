@@ -1,15 +1,26 @@
 module Manifestos
-  # Downloads a party's valmanifest PDF, OCRs it via Mistral (handles
-  # multi-column layouts correctly, unlike naive PDF text extraction —
-  # naive extraction was tried first and produced interleaved, garbled
-  # text on these designs), chunks it by the document's own markdown
-  # headings, and embeds each chunk. Re-running for the same party/
+  # Downloads a party's valmanifest — a PDF or a plain web page — and turns
+  # it into embedded, searchable chunks. Re-running for the same party/
   # election_year replaces the existing chunks rather than accumulating
   # duplicates.
+  #
+  # PDFs are OCRed via Mistral (handles multi-column layouts correctly,
+  # unlike naive PDF text extraction — naive extraction was tried first and
+  # produced interleaved, garbled text on these designs). Plain web pages
+  # (e.g. a party's "vallöften" campaign page, increasingly common alongside
+  # or instead of a PDF) are parsed directly and rendered into the same
+  # lightweight heading-delimited markdown shape the OCR path produces, so
+  # both sources share one chunking/embedding pipeline downstream.
   class Importer
     class Error < StandardError; end
 
     MAX_CHUNK_CHARS = 2000
+    HTML_CONTENT_TYPE = "text/html"
+
+    # Chrome/navigation/boilerplate elements to drop entirely before reading
+    # the page's text — none of it is manifesto content.
+    SKIP_SELECTORS = %w[script style nav header footer aside svg iframe noscript form].freeze
+    CONTENT_SELECTORS = %w[h1 h2 h3 h4 h5 h6 p li blockquote].freeze
 
     def self.call(...)
       new(...).call
@@ -43,6 +54,58 @@ module Manifestos
     private
 
     def extract_markdown
+      response = fetch(@url)
+
+      if response.headers["content-type"].to_s.include?(HTML_CONTENT_TYPE)
+        extract_html_markdown(response.body)
+      else
+        extract_pdf_markdown
+      end
+    end
+
+    def fetch(url)
+      connection = Faraday.new do |f|
+        # Same connection-failure coverage as the other external clients in
+        # this app (Faraday's own retry default only covers timeouts).
+        f.request :retry, max: 3, interval: 1, backoff_factor: 2,
+                          exceptions: [
+                            Faraday::ConnectionFailed, Faraday::TimeoutError,
+                            Errno::ECONNRESET, Errno::ETIMEDOUT
+                          ]
+        f.adapter Faraday.default_adapter
+      end
+      connection.get(url)
+    rescue Faraday::Error => e
+      raise Error, "Could not fetch #{url}: #{e.message}"
+    end
+
+    # Walks the page's main content in document order and renders headings/
+    # paragraphs/list items as the same "#"-heading, blank-line-separated
+    # markdown shape chunk_sections/split_to_size already expect.
+    def extract_html_markdown(html)
+      # Explicit encoding matters here: some real-world pages have byte
+      # sequences that make libxml2's encoding sniffer give up entirely
+      # (fatal error, empty tree, no <body>) unless told what to expect —
+      # confirmed live against a real party campaign page.
+      doc = Nokogiri::HTML(html, nil, "UTF-8")
+      doc.css(SKIP_SELECTORS.join(", ")).remove
+
+      root = doc.at_css("main, article") || doc.at_css("body")
+      return "" if root.nil?
+
+      root.css(CONTENT_SELECTORS.join(", ")).filter_map do |node|
+        text = node.text.squish
+        next if text.blank?
+
+        case node.name
+        when /\Ah([1-6])\z/ then "#{"#" * $1.to_i} #{text}"
+        when "li" then "- #{text}"
+        else text
+        end
+      end.join("\n\n")
+    end
+
+    def extract_pdf_markdown
       response = @client.ocr(document_url: @url)
       response["pages"].map { |page| inline_figure_descriptions(page) }.join("\n\n")
     rescue Mistral::Client::Error => e

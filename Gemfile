@@ -45,6 +45,8 @@ gem "neighbor"
 # HTTP client used to talk to the Mistral API [https://github.com/lostisland/faraday]
 gem "faraday"
 gem "faraday-retry"
+# HTML parsing for importing manifesto content published as web pages rather than PDFs
+gem "nokogiri"
 
 group :development, :test do
   # Loads local secrets (e.g. MISTRAL_API_KEY) from .env in development — Kamal

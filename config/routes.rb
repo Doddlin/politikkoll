@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   get "locale/:locale", to: "locales#update", as: :set_locale, constraints: { locale: /sv|en/ }
   get "sitemap.xml", to: "sitemap#show", defaults: { format: "xml" }
   get "disclaimer", to: "pages#disclaimer"
+  get "how-it-works", to: "pages#how_it_works"
+  get "status", to: "pages#status"
 
   # Defines the root path route ("/")
   root "home#index"

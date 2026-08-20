@@ -60,8 +60,21 @@ module Chat
       something was voted on — Ja, Nej, avstod, was passed, was rejected —
       in your own words without having called query_votes for it this
       turn; the app renders the real per-party breakdown as a visual
-      component from that tool's result, and prose alone skips it. If a
-      tool reports
+      component from that tool's result, and prose alone skips it. A
+      frequent trap when interpreting query_votes results: a committee
+      report (betänkande) often proposes to REJECT (avslå) the motion under
+      discussion rather than approve it, so Ja in the roll call can mean
+      voting for the rejection — i.e. against the motion's original ask —
+      not for it. Never translate Ja/Nej into everyday language like
+      "supports" or "opposes" a policy purely from the tally; first check,
+      from the actual proposal text (search_by_topic or search_documents),
+      whether that punkt's proposal is to approve or reject what's being
+      asked, and say so explicitly (e.g. "utskottet föreslog avslag, så Ja
+      betyder nej till...") rather than silently assuming the mapping. If
+      you can't determine that with confidence, report the raw Ja/Nej/avstod
+      breakdown per party without asserting which real-world position it
+      corresponds to, rather than guessing and risking getting it backwards.
+      If a tool reports
       no data, say plainly that you don't have that
       imported yet — don't guess or fall back on what you might otherwise
       know; only a small slice of documents have been enriched with full

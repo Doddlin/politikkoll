@@ -2,7 +2,11 @@
   <div class="site-footer-inner">
     <p class="site-footer-disclaimer">
       <%= t("footer.disclaimer") %>
+      <%= link_to t("footer.how_it_works"), how_it_works_path %>
+      ·
       <%= link_to t("footer.read_disclaimer"), disclaimer_path %>
+      ·
+      <%= link_to t("footer.data_status"), status_path %>
     </p>
     <p class="site-footer-sources">
       <%= link_to t("footer.source_riksdagen"), "https://data.riksdagen.se", target: "_blank", rel: "noopener" %>

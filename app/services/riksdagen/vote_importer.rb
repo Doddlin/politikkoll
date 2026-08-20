@@ -120,6 +120,11 @@ module Riksdagen
         vote.punkt = row["punkt"]
         vote.dok_id = row["dok_id"].presence
         vote.avser = row["avser"]
+      end
+      # Backfills voted_on even on already-imported votes (column shipped
+      # after the first import ran), so a plain re-run heals old rows too.
+      vote.voted_on ||= row["systemdatum"].presence&.to_date
+      if vote.changed?
         vote.save!
         stats[:votes] += 1
       end

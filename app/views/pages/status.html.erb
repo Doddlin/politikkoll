@@ -1,0 +1,107 @@
+<% content_for :title, "#{t("status.title")} — politikkoll" %>
+<% content_for :description, t("status.subtitle") %>
+
+<main class="page docs">
+  <header class="top">
+    <div>
+      <div class="wordmark">politikkoll</div>
+      <p class="tagline"><%= t("status.title") %></p>
+    </div>
+    <div class="header-actions">
+      <%= render "shared/locale_switcher" %>
+      <%= link_to t("nav.home"), root_path, class: "home-link" %>
+    </div>
+  </header>
+
+  <p class="section-hint docs-subtitle"><%= t("status.subtitle") %></p>
+
+  <section class="section">
+    <p class="section-heading"><%= t("status.totals.heading") %></p>
+    <div class="status-totals">
+      <div>
+        <p class="status-stat-value"><%= number_with_delimiter(@totals[:documents], delimiter: " ") %></p>
+        <p class="status-stat-label"><%= t("home.numbers.documents") %></p>
+      </div>
+      <div>
+        <p class="status-stat-value accent"><%= number_with_delimiter(@totals[:searchable], delimiter: " ") %></p>
+        <p class="status-stat-label"><%= t("home.numbers.searchable") %></p>
+      </div>
+      <div>
+        <p class="status-stat-value"><%= number_with_delimiter(@totals[:members], delimiter: " ") %></p>
+        <p class="status-stat-label"><%= t("home.numbers.members") %></p>
+      </div>
+      <div>
+        <p class="status-stat-value"><%= number_with_delimiter(@totals[:votes], delimiter: " ") %></p>
+        <p class="status-stat-label"><%= t("home.numbers.votes") %></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-heading"><%= t("status.coverage.heading") %></p>
+    <p class="bubble-text status-note"><%= t("status.coverage.body") %></p>
+
+    <div class="table-scroll">
+      <table class="status-table">
+        <thead>
+          <tr>
+            <th><%= t("status.coverage.rm") %></th>
+            <th><%= t("status.coverage.betankanden") %></th>
+            <th><%= t("status.coverage.motioner") %></th>
+            <th><%= t("status.coverage.latest_document") %></th>
+            <th><%= t("status.coverage.voteringar") %></th>
+            <th><%= t("status.coverage.latest_vote") %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @coverage.each do |row| %>
+            <% empty = row[:betankanden].zero? && row[:motioner].zero? && row[:votes].zero? %>
+            <tr class="<%= "empty" if empty %>">
+              <td class="rm-cell"><%= row[:rm] %></td>
+              <td><%= number_with_delimiter(row[:betankanden], delimiter: " ") %></td>
+              <td><%= number_with_delimiter(row[:motioner], delimiter: " ") %></td>
+              <td><%= row[:latest_document]&.strftime("%-d %b %Y") || t("status.coverage.none") %></td>
+              <td><%= number_with_delimiter(row[:votes], delimiter: " ") %></td>
+              <td><%= row[:latest_vote]&.strftime("%-d %b %Y") || t("status.coverage.none") %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-heading"><%= t("status.manifestos.heading") %></p>
+    <p class="bubble-text status-note"><%= t("status.manifestos.body") %></p>
+
+    <div class="table-scroll">
+      <table class="status-table">
+        <thead>
+          <tr>
+            <th><%= t("status.manifestos.party") %></th>
+            <th><%= t("status.manifestos.election_year") %></th>
+            <th><%= t("status.manifestos.chunks") %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @manifestos.each do |m| %>
+            <tr>
+              <td class="rm-cell"><%= m[:party].name %></td>
+              <td><%= m[:election_year] %></td>
+              <td><%= number_with_delimiter(m[:chunks], delimiter: " ") %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="bubble-text">
+      <%= t(
+        "how_it_works.disclaimer_link.body_html",
+        link: link_to(t("how_it_works.disclaimer_link.link_text"), disclaimer_path)
+      ) %>
+    </p>
+  </section>
+</main>

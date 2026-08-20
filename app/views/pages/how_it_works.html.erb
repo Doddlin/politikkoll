@@ -1,0 +1,40 @@
+<% content_for :title, "#{t("how_it_works.title")} — politikkoll" %>
+<% content_for :description, t("how_it_works.subtitle") %>
+
+<main class="page docs">
+  <header class="top">
+    <div>
+      <div class="wordmark">politikkoll</div>
+      <p class="tagline"><%= t("how_it_works.title") %></p>
+    </div>
+    <div class="header-actions">
+      <%= render "shared/locale_switcher" %>
+      <%= link_to t("nav.home"), root_path, class: "home-link" %>
+    </div>
+  </header>
+
+  <p class="section-hint docs-subtitle"><%= t("how_it_works.subtitle") %></p>
+
+  <% %i[what sources how_chat_works no_recommendations ongoing].each do |section| %>
+    <section class="section">
+      <p class="section-heading"><%= t("how_it_works.#{section}.heading") %></p>
+      <p class="bubble-text"><%= t("how_it_works.#{section}.body") %></p>
+    </section>
+  <% end %>
+
+  <section class="section">
+    <p class="section-heading"><%= t("how_it_works.open_source.heading") %></p>
+    <p class="bubble-text">
+      <%= t(
+        "how_it_works.open_source.body_html",
+        link: link_to(t("how_it_works.open_source.link_text"), "https://github.com/Doddlin/politikkoll", target: "_blank", rel: "noopener")
+      ) %>
+    </p>
+    <p class="bubble-text">
+      <%= t(
+        "how_it_works.disclaimer_link.body_html",
+        link: link_to(t("how_it_works.disclaimer_link.link_text"), disclaimer_path)
+      ) %>
+    </p>
+  </section>
+</main>

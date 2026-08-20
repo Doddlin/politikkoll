@@ -16,6 +16,9 @@ production: &data_coverage
   import_missing_votes:
     class: "Riksdagen::ImportMissingVotesJob"
     schedule: every 10 minutes
+  import_new_documents:
+    class: "Riksdagen::ImportNewDocumentsJob"
+    schedule: every 15 minutes
   enrich_documents:
     class: "Riksdagen::EnrichDocumentsJob"
     schedule: every 2 minutes
