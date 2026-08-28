@@ -5,6 +5,14 @@ module Tools
   # Results are cached for a day; SCB is rate-limited and yearly government
   # statistics don't need a live call on every chat message.
   class StatisticsQuery
+    # SCB's public browsing UI (as opposed to the api.scb.se JSON endpoint
+    # Scb::Client actually queries) mirrors a table_path 1:1: leading slash
+    # dropped, "/" replaced with "__", prefixed with "START__". Confirmed
+    # live against all four registered tables — each resolves to that
+    # table's real page (distinct, substantial HTML per table), not a
+    # generic fallback.
+    STATISTIKDATABASEN_BASE = "https://www.statistikdatabasen.scb.se/pxweb/en/ssd".freeze
+
     SCHEMA = {
       type: "function",
       function: {
@@ -45,8 +53,13 @@ module Tools
       series = series.select { |row| row[:year] >= from_year } if from_year.present?
 
       { found: true, topic: topic, label: config[:label_sv], unit: config[:unit],
-        source: "SCB (Statistiska centralbyrån)", series: series }
+        source: "SCB (Statistiska centralbyrån)", source_url: table_url(config[:table_path]), series: series }
     end
+
+    def self.table_url(table_path)
+      "#{STATISTIKDATABASEN_BASE}/START__#{table_path.delete_prefix("/").gsub("/", "__")}/"
+    end
+    private_class_method :table_url
 
     # Sums across any rows that share a year — some tables only split by a
     # demographic (sex, building type) rather than offering a pre-summed

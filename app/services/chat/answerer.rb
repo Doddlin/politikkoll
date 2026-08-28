@@ -223,7 +223,7 @@ module Chat
       when "query_statistics"
         return [] unless result[:found]
 
-        [ { label: "SCB: #{result[:label]}", url: "https://www.scb.se" } ]
+        [ { label: "SCB: #{result[:label]}", url: result[:source_url] } ]
       else
         []
       end
