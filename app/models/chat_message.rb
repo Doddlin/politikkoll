@@ -2,8 +2,16 @@ class ChatMessage < ApplicationRecord
   belongs_to :conversation
 
   enum :role, { user: "user", assistant: "assistant" }, validate: true
+  # pending: an assistant turn whose answer is still being generated in the
+  # background — content is nil until AnswerJob fills it in and broadcasts
+  # the update. Regular user messages, and finished answers, are
+  # "complete"; "failed" also carries content (a user-facing error string)
+  # so a page reload shows the same error instead of an eternal thinking
+  # bubble — it's a separate status purely so the view can style it as an
+  # error rather than a normal answer.
+  enum :status, { pending: "pending", complete: "complete", failed: "failed" }, validate: true
 
-  validates :content, presence: true
+  validates :content, presence: true, unless: :pending?
 
   # sources/vote_boards are stored with symbol-ish keys in Ruby but come back
   # from jsonb as string keys — normalize on read so views don't have to care.

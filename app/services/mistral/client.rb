@@ -17,7 +17,17 @@ module Mistral
         # adding to it. Connection-level failures (a plain ECONNRESET, no
         # HTTP response at all) added on top of that, confirmed live
         # elsewhere in this app to not be retried otherwise.
+        #
+        # methods: is the one that actually matters here and was missing —
+        # faraday-retry only retries its IDEMPOTENT_METHODS default
+        # (get/head/options/put/delete) unless told otherwise, silently
+        # excluding POST. Every call this client makes (chat/embed/ocr) is
+        # a POST, so without this the whole retry config above was dead
+        # code — confirmed live: a timeout failed after exactly one attempt
+        # despite max: 4. Safe to retry here since a failed/timed-out
+        # completion has no side effect worth worrying about duplicating.
         f.request :retry, max: 4, interval: 1, backoff_factor: 2,
+                          methods: %i[post],
                           retry_statuses: [ 429, 500, 502, 503 ],
                           exceptions: [
                             Faraday::RetriableResponse,
@@ -35,7 +45,15 @@ module Mistral
       body[:tools] = tools if tools.present?
       body[:tool_choice] = tool_choice if tool_choice.present?
 
-      post("chat/completions", body)
+      # Explicit and shorter than the adapter's default (confirmed live:
+      # Net::HTTP's own default read timeout is 60s, which left a chat
+      # request hanging a full minute before failing) — this is on the
+      # user-facing request path, so it should fail fast enough for the
+      # retry middleware above to actually get a second attempt in before
+      # the user gives up, not silently eat the whole latency budget on one
+      # hung attempt. Left as the adapter default for ocr/embed, which run
+      # outside a request cycle and can afford to wait longer.
+      post("chat/completions", body, open_timeout: 10, timeout: 30)
     end
 
     # inputs: a string or array of strings. Returns an array of float arrays,
@@ -78,11 +96,13 @@ module Mistral
 
     private
 
-    def post(path, body)
+    def post(path, body, open_timeout: nil, timeout: nil)
       response = @connection.post(path) do |req|
         req.headers["Content-Type"] = "application/json"
         req.headers["Authorization"] = "Bearer #{@api_key}"
         req.body = body.to_json
+        req.options.open_timeout = open_timeout if open_timeout
+        req.options.timeout = timeout if timeout
       end
 
       unless response.success?

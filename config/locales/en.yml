@@ -15,6 +15,7 @@ en:
     read_disclaimer: "Read the full disclaimer →"
     how_it_works: "How politikkoll works →"
     data_status: "Data status"
+    similar_projects: "Similar projects:"
     source_riksdagen: "Riksdagen open data"
     source_scb: "Statistics Sweden database"
   disclaimer_modal:
@@ -147,6 +148,14 @@ en:
     input_placeholder: "Ask about a party, a vote, or a topic…"
     submit: Ask
     thinking: "Thinking …"
+    unavailable_error: "Couldn't reach the AI service right now — please try again in a moment."
+    status:
+      search_documents: "Looking up the right document…"
+      search_by_topic: "Searching committee reports and motions…"
+      query_votes: "Checking how each party actually voted…"
+      search_manifesto: "Checking the party's election manifesto…"
+      query_statistics: "Checking official statistics…"
+      working: "Working on it…"
   vote_board:
     point: point
   ballots:

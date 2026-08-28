@@ -1,11 +1,12 @@
 module Chat
   Answer = Data.define(:text, :sources, :vote_boards)
 
-  # Orchestrates one turn of a conversation: sends the prior history plus the
-  # new question to Mistral with the available tools, executes whatever the
-  # model asks for against the real database — possibly across several
-  # rounds (e.g. search_documents to find a beteckning, then query_votes on
-  # it) — then persists the turn and returns a final, sourced answer.
+  # Orchestrates one turn of a conversation: sends the prior history to
+  # Mistral with the available tools, executes whatever the model asks for
+  # against the real database — possibly across several rounds (e.g.
+  # search_documents to find a beteckning, then query_votes on it) — then
+  # fills in and broadcasts the already-persisted, pending assistant
+  # ChatMessage. Runs inside Chat::AnswerJob, not the request cycle.
   class Answerer
     SYSTEM_PROMPT = <<~PROMPT.squish
       You are politikkoll, a Swedish civic tool that helps people understand
@@ -103,19 +104,39 @@ module Chat
     MAX_ROUNDS = 5
     MAX_BOARDS_PER_ANSWER = 2
 
+    # Which locale key describes each tool in progress — shown as the
+    # pending bubble's status line while that round is actually running, so
+    # the wait reads as real, visible work rather than a generic spinner.
+    STATUS_KEYS = {
+      "query_votes" => "chat.status.query_votes",
+      "search_documents" => "chat.status.search_documents",
+      "search_by_topic" => "chat.status.search_by_topic",
+      "search_manifesto" => "chat.status.search_manifesto",
+      "query_statistics" => "chat.status.query_statistics"
+    }.freeze
+
     def initialize(client: Mistral::Client.new)
       @client = client
     end
 
-    def ask(conversation, question)
-      history = conversation.chat_messages.map { |m| { role: m.role, content: m.content } }
-      messages = [ { role: "system", content: SYSTEM_PROMPT }, *history, { role: "user", content: question } ]
+    # assistant_message: an already-persisted, still-pending ChatMessage —
+    # the user's own turn (and any earlier ones) are already in the
+    # conversation by the time this runs, this just fills in the answer and
+    # broadcasts it. Runs inside Chat::AnswerJob, off the request cycle.
+    def ask(assistant_message)
+      conversation = assistant_message.conversation
+      # Only ever-completed turns count as history — a still-pending sibling
+      # (a second question fired before the first one finished) has no
+      # content yet and would otherwise show up as a blank turn.
+      history = conversation.chat_messages.where(status: "complete").where.not(id: assistant_message.id)
+        .map { |m| { role: m.role, content: m.content } }
+      messages = [ { role: "system", content: SYSTEM_PROMPT }, *history ]
       sources = []
       vote_boards = []
       answer = nil
 
       MAX_ROUNDS.times do
-        response = @client.chat(messages: messages, model: "mistral-large-latest", tools: TOOLS, tool_choice: "auto")
+        response = @client.chat(messages: messages, model: "mistral-medium-latest", tools: TOOLS, tool_choice: "auto")
         message = response.dig("choices", 0, "message")
 
         if message["tool_calls"].blank?
@@ -124,6 +145,7 @@ module Chat
         end
 
         messages << message
+        update_status!(assistant_message, message["tool_calls"])
 
         message["tool_calls"].each do |tool_call|
           name = tool_call.dig("function", "name")
@@ -136,8 +158,12 @@ module Chat
       end
 
       answer ||= Answer.new(text: "Kunde inte ta fram ett svar just nu — försök gärna igen.", sources: sources.uniq, vote_boards: vote_boards.first(MAX_BOARDS_PER_ANSWER))
-      persist!(conversation, question, answer)
+      complete!(assistant_message, answer)
       answer
+    rescue Mistral::Client::Error => e
+      fail!(assistant_message, e.message)
+    rescue Faraday::TimeoutError, Faraday::ConnectionFailed
+      fail!(assistant_message, I18n.t("chat.unavailable_error"))
     end
 
     private
@@ -211,10 +237,35 @@ module Chat
       result[:votes].filter_map { |v| Vote.find_by(votering_id: v[:votering_id])&.board }
     end
 
-    def persist!(conversation, question, answer)
-      conversation.chat_messages.create!(role: "user", content: question)
-      conversation.chat_messages.create!(
-        role: "assistant", content: answer.text, sources: answer.sources, vote_boards: answer.vote_boards
+    # Updates the pending bubble's visible text to reflect the tool call(s)
+    # about to run this round, without touching status — still "pending",
+    # just no longer a silent wait. Reuses content as scratch space for
+    # this; it's overwritten with the real answer once complete.
+    def update_status!(assistant_message, tool_calls)
+      names = tool_calls.filter_map { |tc| tc.dig("function", "name") }.uniq
+      label = names.filter_map { |n| I18n.t(STATUS_KEYS[n], default: nil) if STATUS_KEYS[n] }.first
+      assistant_message.update!(content: label || I18n.t("chat.status.working"))
+      broadcast!(assistant_message)
+    end
+
+    def complete!(assistant_message, answer)
+      assistant_message.update!(
+        content: answer.text, sources: answer.sources, vote_boards: answer.vote_boards, status: "complete"
+      )
+      broadcast!(assistant_message)
+    end
+
+    def fail!(assistant_message, text)
+      assistant_message.update!(content: text, status: "failed")
+      broadcast!(assistant_message)
+    end
+
+    def broadcast!(assistant_message)
+      Turbo::StreamsChannel.broadcast_replace_to(
+        assistant_message.conversation,
+        target: ActionView::RecordIdentifier.dom_id(assistant_message),
+        partial: "chats/message",
+        locals: { message: assistant_message }
       )
     end
   end

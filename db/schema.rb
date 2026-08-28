@@ -10,17 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_18_081121) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_28_094305) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "vector"
 
   create_table "chat_messages", force: :cascade do |t|
-    t.text "content", null: false
+    t.text "content"
     t.bigint "conversation_id", null: false
     t.datetime "created_at", null: false
     t.string "role", null: false
     t.jsonb "sources", default: [], null: false
+    t.string "status", default: "complete", null: false
     t.datetime "updated_at", null: false
     t.jsonb "vote_boards", default: [], null: false
     t.index ["conversation_id", "created_at"], name: "index_chat_messages_on_conversation_id_and_created_at"

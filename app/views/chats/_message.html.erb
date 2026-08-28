@@ -1,18 +1,24 @@
-<div class="bubble <%= message.role %>" id="<%= dom_id(message) %>">
+<div class="bubble <%= message.role %><%= " thinking" if message.pending? %><%= " error-bubble" if message.failed? %>" id="<%= dom_id(message) %>">
   <% if message.user? %>
     <p class="bubble-text"><%= message.content %></p>
+  <% elsif message.pending? %>
+    <p class="who"><%= t("chat.answer_label") %></p>
+    <p class="bubble-text status-text"><%= message.content.presence || t("chat.thinking") %></p>
+    <div class="thinking-dots"><span></span><span></span><span></span></div>
   <% else %>
     <p class="who"><%= t("chat.answer_label") %></p>
-    <p class="bubble-text"><%= message.content %></p>
-    <% message.vote_board_list.each do |board| %>
-      <%= render "shared/vote_board", board: board %>
-    <% end %>
-    <% if message.source_list.any? %>
-      <div class="citations">
-        <% message.source_list.each do |source| %>
-          <%= link_to source[:label], source[:url], class: "cite", target: "_blank", rel: "noopener" %>
-        <% end %>
-      </div>
+    <p class="bubble-text<%= " error" if message.failed? %>"><%= message.content %></p>
+    <% unless message.failed? %>
+      <% message.vote_board_list.each do |board| %>
+        <%= render "shared/vote_board", board: board %>
+      <% end %>
+      <% if message.source_list.any? %>
+        <div class="citations">
+          <% message.source_list.each do |source| %>
+            <%= link_to source[:label], source[:url], class: "cite", target: "_blank", rel: "noopener" %>
+          <% end %>
+        </div>
+      <% end %>
     <% end %>
   <% end %>
 </div>

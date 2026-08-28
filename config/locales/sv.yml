@@ -15,6 +15,7 @@ sv:
     read_disclaimer: "Läs hela ansvarsfriskrivningen →"
     how_it_works: "Så funkar politikkoll →"
     data_status: "Dataläge"
+    similar_projects: "Liknande projekt:"
     source_riksdagen: "Riksdagens öppna data"
     source_scb: "SCB:s statistikdatabas"
   disclaimer_modal:
@@ -147,6 +148,14 @@ sv:
     input_placeholder: "Fråga om ett parti, en votering eller ett ämne …"
     submit: Fråga
     thinking: "Tänker …"
+    unavailable_error: "Kunde inte nå AI-tjänsten just nu — försök gärna igen om en liten stund."
+    status:
+      search_documents: "Letar upp rätt dokument…"
+      search_by_topic: "Söker igenom betänkanden och motioner…"
+      query_votes: "Kontrollerar hur varje parti faktiskt röstade…"
+      search_manifesto: "Kontrollerar partiets valmanifest…"
+      query_statistics: "Kontrollerar officiell statistik…"
+      working: "Jobbar på saken…"
   vote_board:
     point: punkt
   ballots:

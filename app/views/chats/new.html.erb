@@ -13,6 +13,8 @@
     </div>
   </header>
 
+  <%= turbo_stream_from @conversation %>
+
   <div class="thread" id="thread" data-chat-target="thread">
     <% if @conversation.chat_messages.none? %>
       <div class="empty-state" id="empty-state" data-chat-target="emptyState">
@@ -22,10 +24,6 @@
     <% end %>
 
     <%= render partial: "chats/message", collection: @conversation.chat_messages, as: :message %>
-
-    <% if @error %>
-      <%= render "chats/error_bubble", error: @error %>
-    <% end %>
   </div>
 
   <%= form_with url: chat_path, method: :post, class: "ask-form", data: { action: "turbo:submit-start->chat#thinking turbo:submit-end->chat#done" } do |f| %>

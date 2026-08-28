@@ -2,7 +2,6 @@ class ChatsController < ApplicationController
   before_action :set_conversation
 
   def new
-    @error = nil
   end
 
   # A question submitted from the dedicated chat page updates in place via
@@ -11,21 +10,16 @@ class ChatsController < ApplicationController
   # element to stream into, and jumping into the main conversation is the
   # actual intent there.
   def create
-    Chat::Answerer.new.ask(@conversation, build_question)
+    user_message = @conversation.chat_messages.create!(role: "user", content: build_question)
+    assistant_message = @conversation.chat_messages.create!(role: "assistant", status: "pending")
+
+    Chat::AnswerJob.perform_later(assistant_message.id, I18n.locale.to_s)
 
     if params[:document_id].present?
       redirect_to new_chat_path
     else
-      @messages = @conversation.chat_messages.order(:created_at).last(2)
+      @messages = [ user_message, assistant_message ]
       render formats: :turbo_stream
-    end
-  rescue Mistral::Client::Error => e
-    @error = e.message
-
-    if params[:document_id].present?
-      render :new, status: :bad_gateway
-    else
-      render formats: :turbo_stream, status: :bad_gateway
     end
   end
 

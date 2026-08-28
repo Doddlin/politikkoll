@@ -1090,6 +1090,14 @@ body::after { width: 380px; height: 380px; bottom: -160px; left: -140px; backgro
 }
 .site-footer-sources a { color: var(--ink-faint); text-decoration: none; }
 .site-footer-sources a:hover { color: var(--accent-ink); text-decoration: underline; }
+.site-footer-friends {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin: 6px 0 0;
+}
+.site-footer-friends a { color: var(--ink-faint); text-decoration: none; }
+.site-footer-friends a:hover { color: var(--accent-ink); text-decoration: underline; }
 
 /* Disclaimer modal — separate from the cookie banner (different topic,
    different treatment): a centered overlay, not a bottom bar, and it isn't
